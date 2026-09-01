@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MCD Merise de la plateforme Poissonnerie Saint-Michel.">
+  <title>MCD — Poissonnerie Saint-Michel</title>
+  <style>
+    :root {
+      --ink: #142a38;
+      --muted: #5c6d77;
+      --paper: #f5f8f8;
+      --surface: #ffffff;
+      --line: #d8e2e4;
+      --blue: #06667a;
+      --blue-dark: #074757;
+      --blue-pale: #e5f4f4;
+      --coral: #ea6b4a;
+      --coral-pale: #fff0eb;
+      --gold: #dca841;
+      --gold-pale: #fff7df;
+      --shadow: 0 12px 35px rgba(27, 62, 72, .08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; }
+    .shell { max-width: 1480px; margin: 0 auto; padding: 0 28px 58px; }
+
+    .hero {
+      color: #fff;
+      background:
+        radial-gradient(circle at 84% 16%, rgba(99, 207, 201, .34), transparent 24rem),
+        radial-gradient(circle at 60% 105%, rgba(234, 107, 74, .21), transparent 28rem),
+        linear-gradient(125deg, #043846, #075c6e 60%, #087487);
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 12px 30px rgba(4, 56, 70, .18);
+    }
+    .hero-inner { max-width: 1480px; margin: 0 auto; padding: 54px 28px 42px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin: 0 0 12px; padding: 5px 10px;
+      font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22); border-radius: 999px;
+    }
+    .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #ffca6a; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 860px; margin-bottom: 12px; font-size: clamp(2rem, 4vw, 3.35rem); line-height: 1.05; letter-spacing: -.045em; }
+    .hero-lead { max-width: 790px; margin-bottom: 28px; color: rgba(255,255,255,.86); font-size: 1.06rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .hero-meta span { padding: 7px 11px; font-size: .86rem; font-weight: 650; background: rgba(0,0,0,.16); border: 1px solid rgba(255,255,255,.14); border-radius: 9px; }
+
+    .nav {
+      position: sticky; z-index: 10; top: 0;
+      display: flex; gap: 5px; overflow-x: auto;
+      margin: 24px 0; padding: 9px;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+      border: 1px solid rgba(216,226,228,.9); border-radius: 14px; box-shadow: 0 7px 20px rgba(28,62,72,.07);
+    }
+    .nav a { flex: 0 0 auto; padding: 7px 11px; color: var(--muted); font-size: .84rem; font-weight: 750; text-decoration: none; border-radius: 8px; }
+    .nav a:hover, .nav a:focus { color: var(--blue-dark); background: var(--blue-pale); outline: none; }
+
+    section { scroll-margin-top: 82px; margin: 42px 0; }
+    .section-heading { max-width: 850px; margin-bottom: 18px; }
+    .section-kicker { margin-bottom: 5px; color: var(--blue); font-size: .75rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { margin-bottom: 8px; font-size: clamp(1.5rem, 2.5vw, 2.1rem); line-height: 1.13; letter-spacing: -.03em; }
+    .section-heading > p:last-child { margin-bottom: 0; color: var(--muted); }
+
+    .intro-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 20px; }
+    .panel, .note, .entity-card, .relation-card, .rule, .diagram-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .panel { padding: 24px; }
+    .panel h3 { margin-bottom: 9px; font-size: 1rem; }
+    .panel p:last-child { margin-bottom: 0; }
+    .definition-list { display: grid; gap: 12px; margin: 0; }
+    .definition-list div { display: grid; grid-template-columns: 104px 1fr; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid #edf1f2; }
+    .definition-list div:last-child { padding-bottom: 0; border-bottom: 0; }
+    .definition-list dt { color: var(--blue-dark); font-size: .85rem; font-weight: 850; }
+    .definition-list dd { margin: 0; color: var(--muted); font-size: .9rem; }
+    .callout { display: flex; gap: 12px; padding: 16px 18px; color: #5d4615; background: var(--gold-pale); border: 1px solid #efd98f; border-radius: 13px; }
+    .callout strong { color: #79580e; }
+    .callout p { margin: 0; font-size: .92rem; }
+
+    .diagram-card { overflow: hidden; }
+    .diagram-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; padding: 20px 22px 14px; }
+    .diagram-top h3 { margin: 0 0 4px; font-size: 1.04rem; }
+    .diagram-top p { margin: 0; color: var(--muted); font-size: .88rem; }
+    .zoom-hint { flex: 0 0 auto; margin: 0; padding: 5px 8px; color: var(--blue-dark); font-size: .75rem; font-weight: 750; background: var(--blue-pale); border-radius: 7px; }
+    .diagram-scroll { overflow: auto; border-top: 1px solid var(--line); background: #fbfefe; }
+    svg { display: block; min-width: 1120px; width: 100%; height: auto; }
+    .entity rect { fill: #fff; stroke: #0e6a7c; stroke-width: 2; rx: 9; }
+    .entity .head { fill: #0d6576; stroke: #0d6576; }
+    .entity text { fill: #17303a; font-size: 12px; }
+    .entity .title { fill: #fff; font-size: 13px; font-weight: 800; letter-spacing: .3px; }
+    .entity .key { fill: #055b6c; font-weight: 800; }
+    .relation polygon { fill: #fff9e9; stroke: #c88d1e; stroke-width: 2; }
+    .relation text { fill: #78520d; font-size: 10px; font-weight: 850; text-anchor: middle; }
+    .link { fill: none; stroke: #8b9da2; stroke-width: 1.8; }
+    .link.dashed { stroke-dasharray: 5 4; }
+    .card { fill: #34505a; font-size: 12px; font-weight: 850; }
+    .tiny { fill: #65787e; font-size: 10px; }
+    .diagram-note { fill: #eef9f8; stroke: #b9e0dc; stroke-width: 1; rx: 8; }
+    .diagram-note-text { fill: #35626a; font-size: 10px; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 10px 20px; padding: 13px 20px 18px; color: var(--muted); font-size: .83rem; }
+    .legend-item { display: inline-flex; align-items: center; gap: 7px; }
+    .legend-shape { display: inline-block; width: 16px; height: 12px; border: 2px solid var(--blue); border-radius: 3px; background: #fff; }
+    .legend-diamond { width: 12px; height: 12px; border: 2px solid #c88d1e; background: #fff9e9; transform: rotate(45deg); }
+    .legend-card { padding: 1px 4px; color: #fff; font-size: .7rem; font-weight: 800; background: #34505a; border-radius: 3px; }
+
+    .relation-table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    table { width: 100%; min-width: 940px; border-collapse: collapse; }
+    thead th { padding: 13px 15px; color: #fff; font-size: .78rem; letter-spacing: .04em; text-align: left; text-transform: uppercase; background: var(--blue-dark); }
+    tbody td { padding: 14px 15px; vertical-align: top; border-bottom: 1px solid #e7edef; font-size: .9rem; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #fbfdfd; }
+    .relation-id { color: var(--blue); font-weight: 850; white-space: nowrap; }
+    .cardinality { color: var(--blue-dark); font-weight: 800; white-space: nowrap; }
+    .constraint { color: var(--muted); font-size: .86rem; }
+    .optional { display: inline-block; padding: 1px 6px; color: #8a5625; font-size: .72rem; font-weight: 800; background: var(--coral-pale); border-radius: 5px; }
+
+    .entity-index { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+    .entity-index a { padding: 7px 10px; color: var(--blue-dark); font-size: .8rem; font-weight: 780; text-decoration: none; background: var(--blue-pale); border-radius: 999px; }
+    .entity-index a:hover { color: #fff; background: var(--blue); }
+    .entity-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .entity-card { overflow: hidden; scroll-margin-top: 80px; }
+    .entity-card.full { grid-column: 1 / -1; }
+    .entity-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; background: linear-gradient(100deg, #e7f6f5, #f8fcfc); border-bottom: 1px solid #cae7e4; }
+    .entity-card-head h3 { margin: 0; color: var(--blue-dark); font-size: 1rem; letter-spacing: .01em; }
+    .entity-card-head span { padding: 3px 7px; color: #6f5b2b; font-size: .7rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; background: var(--gold-pale); border: 1px solid #f0dfaa; border-radius: 5px; }
+    .entity-purpose { margin: 0; padding: 14px 18px 6px; color: var(--muted); font-size: .9rem; }
+    .property-list { margin: 0; padding: 8px 18px 18px; list-style: none; }
+    .property-list li { display: grid; grid-template-columns: minmax(150px, .9fr) 1.7fr; gap: 12px; padding: 9px 0; border-bottom: 1px solid #edf1f2; }
+    .property-list li:last-child { border-bottom: 0; }
+    .property { color: var(--ink); font-size: .86rem; font-weight: 820; }
+    .property .marker { margin-right: 3px; color: var(--coral); }
+    .utility { color: var(--muted); font-size: .86rem; }
+    .enum { color: #49717a; font-size: .78rem; font-weight: 650; }
+    .tag { display: inline-block; margin-left: 5px; padding: 1px 5px; color: #42747a; font-size: .66rem; font-weight: 850; letter-spacing: .04em; background: #e9f5f4; border-radius: 4px; vertical-align: 1px; }
+
+    .rules { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .rule { padding: 17px; }
+    .rule strong { display: block; margin-bottom: 5px; color: var(--blue-dark); font-size: .92rem; }
+    .rule p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .number { display: inline-grid; place-items: center; width: 23px; height: 23px; margin-right: 6px; color: #fff; font-size: .75rem; background: var(--coral); border-radius: 50%; }
+
+    .footer { margin-top: 42px; padding: 22px 0 0; color: var(--muted); font-size: .83rem; border-top: 1px solid var(--line); }
+    .footer strong { color: var(--ink); }
+    .print { float: right; padding: 7px 10px; color: var(--blue-dark); font: inherit; font-weight: 800; cursor: pointer; background: #fff; border: 1px solid var(--line); border-radius: 7px; }
+    .print:hover { background: var(--blue-pale); }
+
+    @media (max-width: 860px) {
+      .shell { padding-inline: 16px; }
+      .hero-inner { padding: 38px 18px 32px; }
+      .intro-grid, .entity-grid, .rules { grid-template-columns: 1fr; }
+      .entity-card.full { grid-column: auto; }
+      .property-list li { grid-template-columns: 1fr; gap: 3px; }
+      .diagram-top { display: block; }
+      .zoom-hint { display: inline-block; margin-top: 9px; }
+    }
+    @media print {
+      body { background: #fff; font-size: 10pt; }
+      .hero { border-radius: 0; box-shadow: none; }
+      .nav, .print { display: none; }
+      .shell { max-width: none; padding: 0 12mm; }
+      section { break-inside: avoid; }
+      .panel, .note, .entity-card, .relation-card, .rule, .diagram-card, .relation-table-wrap { box-shadow: none; }
+      .diagram-scroll { overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Conception Merise · Version 1.0</p>
+      <h1>Modèle Conceptuel de Données</h1>
+      <p class="hero-lead">Plateforme web de gestion et de commande en ligne de la <strong>Poissonnerie Saint‑Michel</strong>, Akpakpa · Cotonou.</p>
+      <div class="hero-meta">
+        <span>16 entités</span>
+        <span>20 associations</span>
+        <span>Cardinalités Merise explicitées</span>
+        <span>Source : cahier des charges, août 2026</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <nav class="nav" aria-label="Navigation du document">
+      <a href="#lecture">Lecture</a>
+      <a href="#mcd-coeur">MCD métier</a>
+      <a href="#mcd-pilotage">MCD pilotage</a>
+      <a href="#relations">Relations</a>
+      <a href="#proprietes">Propriétés</a>
+      <a href="#regles">Règles métier</a>
+    </nav>
+
+    <section id="lecture">
+      <div class="section-heading">
+        <p class="section-kicker">Comment lire ce document</p>
+        <h2>Un MCD centré sur les faits métier, pas sur les écrans</h2>
+        <p>Le modèle couvre le cycle complet : catalogue → commande → paiement → préparation/livraison → traçabilité et pilotage. Les clés techniques sont indiquées par <strong>#</strong> ; elles n’expriment pas encore des clés étrangères, qui relèvent du MLD.</p>
+      </div>
+      <div class="intro-grid">
+        <article class="panel">
+          <h3>Notation des cardinalités</h3>
+          <dl class="definition-list">
+            <div><dt>(0,1)</dt><dd>La participation est facultative et limitée à une occurrence.</dd></div>
+            <div><dt>(1,1)</dt><dd>La participation est obligatoire et unique.</dd></div>
+            <div><dt>(0,n)</dt><dd>La participation est facultative et peut être multiple.</dd></div>
+            <div><dt>(1,n)</dt><dd>La participation est obligatoire et peut être multiple.</dd></div>
+          </dl>
+        </article>
+        <aside class="panel">
+          <h3>Périmètre choisi</h3>
+          <p>Le panier anonyme n’est pas une entité persistante : il vit en session navigateur jusqu’à la validation. Après validation, son contenu est conservé par <strong>COMMANDE</strong> et <strong>LIGNE_COMMANDE</strong>.</p>
+          <div class="callout">
+            <p><strong>Décision de modélisation :</strong> le client n’a pas de compte de connexion, mais une fiche <strong>CLIENT</strong> est créée ou retrouvée à partir de son téléphone afin de permettre l’historique demandé par l’administrateur.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="mcd-coeur">
+      <div class="section-heading">
+        <p class="section-kicker">Diagramme 1</p>
+        <h2>MCD — cycle commercial et opérationnel</h2>
+        <p>Les attributs affichés dans le diagramme sont les plus structurants. Le dictionnaire complet, avec l’utilité de chaque propriété, se trouve plus bas.</p>
+      </div>
+      <div class="diagram-card">
+        <div class="diagram-top">
+          <div><h3>Catalogue, commande, stock, paiement et livraison</h3><p>Les losanges désignent les associations ; les codes A1 à A13 renvoient au tableau des relations.</p></div>
+          <span class="zoom-hint">Faites défiler horizontalement sur mobile</span>
+        </div>
+        <div class="diagram-scroll">
+          <svg viewBox="0 0 1420 915" role="img" aria-labelledby="core-title core-desc">
+            <title id="core-title">MCD principal de la Poissonnerie Saint-Michel</title>
+            <desc id="core-desc">Diagramme entités associations de la gestion produits, commandes, paiement, stock, livraison et statut.</desc>
+            <defs>
+              <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#41646c" flood-opacity=".12"/></filter>
+            </defs>
+
+            <!-- links behind all objects -->
+            <path class="link" d="M225 158 H266 M344 158 H410"/>
+            <path class="link" d="M565 158 H601 M679 158 H734"/>
+            <path class="link" d="M875 158 H915 M993 158 H1030"/>
+            <path class="link" d="M1148 158 H1184"/>
+            <path class="link" d="M440 255 V321 M440 399 V450"/>
+            <path class="link" d="M734 255 V321 M734 399 V450"/>
+            <path class="link" d="M789 492 H845 M923 492 H964"/>
+            <path class="link" d="M789 536 H845 M923 536 H964"/>
+            <path class="link" d="M1056 536 H1082 M1160 536 H1190"/>
+            <path class="link" d="M1060 652 V698 M1060 776 V802"/>
+            <path class="link" d="M1086 652 V698 M1086 776 V802"/>
+            <path class="link" d="M590 706 H655 M733 706 H778"/>
+            <path class="link" d="M880 706 H924"/>
+            <path class="link" d="M490 600 V638 M490 716 V758"/>
+
+            <!-- Categories -->
+            <g class="entity" filter="url(#shadow)">
+              <rect x="70" y="84" width="155" height="148"/><rect class="head" x="70" y="84" width="155" height="33"/>
+              <text class="title" x="147" y="105" text-anchor="middle">CATEGORIE</text>
+              <text class="key" x="84" y="139"># id_categorie</text><text x="84" y="158">libelle</text><text x="84" y="177">description</text><text x="84" y="196">est_active</text><text x="84" y="215">created_at</text>
+            </g>
+            <g class="relation">
+              <polygon points="305,127 344,158 305,189 266,158"/><text x="305" y="154">A1</text><text x="305" y="167">CLASSER</text>
+            </g>
+            <text class="card" x="234" y="148">(0,n)</text><text class="card" x="350" y="148">(1,1)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="410" y="70" width="155" height="176"/><rect class="head" x="410" y="70" width="155" height="33"/>
+              <text class="title" x="487" y="91" text-anchor="middle">PRODUIT</text>
+              <text class="key" x="424" y="125"># id_produit</text><text x="424" y="144">libelle</text><text x="424" y="163">prix_unitaire</text><text x="424" y="182">unite_vente</text><text x="424" y="201">quantite_stock</text><text x="424" y="220">est_actif</text>
+            </g>
+            <g class="relation">
+              <polygon points="640,127 679,158 640,189 601,158"/><text x="640" y="154">A4</text><text x="640" y="167">REFERENCER</text>
+            </g>
+            <text class="card" x="568" y="148">(0,n)</text><text class="card" x="686" y="148">(1,1)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="734" y="70" width="141" height="176"/><rect class="head" x="734" y="70" width="141" height="33"/>
+              <text class="title" x="804" y="91" text-anchor="middle">LIGNE_COMMANDE</text>
+              <text class="key" x="747" y="125"># id_ligne</text><text x="747" y="144">quantite</text><text x="747" y="163">prix_unitaire</text><text x="747" y="182">sous_total</text><text x="747" y="201">created_at</text>
+            </g>
+            <g class="relation">
+              <polygon points="954,127 993,158 954,189 915,158"/><text x="954" y="154">A3</text><text x="954" y="167">COMPOSER</text>
+            </g>
+            <text class="card" x="882" y="148">(1,1)</text><text class="card" x="1000" y="148">(1,n)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="1030" y="58" width="154" height="202"/><rect class="head" x="1030" y="58" width="154" height="33"/>
+              <text class="title" x="1107" y="79" text-anchor="middle">COMMANDE</text>
+              <text class="key" x="1043" y="112"># id_commande</text><text x="1043" y="131">numero_commande</text><text x="1043" y="150">date_commande</text><text x="1043" y="169">statut_courant</text><text x="1043" y="188">mode_retrait</text><text x="1043" y="207">montant_total</text><text x="1043" y="226">confirmation_reception</text>
+            </g>
+            <g class="relation">
+              <polygon points="1223,127 1262,158 1223,189 1184,158"/><text x="1223" y="154">A2</text><text x="1223" y="167">COMMANDER</text>
+            </g>
+            <text class="card" x="1150" y="148">(1,1)</text><text class="card" x="1269" y="148">(0,n)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="1300" y="84" width="105" height="148"/><rect class="head" x="1300" y="84" width="105" height="33"/>
+              <text class="title" x="1352" y="105" text-anchor="middle">CLIENT</text>
+              <text class="key" x="1312" y="139"># id_client</text><text x="1312" y="158">nom_complet</text><text x="1312" y="177">telephone</text><text x="1312" y="196">email</text><text x="1312" y="215">created_at</text>
+            </g>
+
+            <!-- Product and stock -->
+            <g class="relation">
+              <polygon points="440,360 480,391 440,422 400,391"/><text x="440" y="387">A12</text><text x="440" y="400">CONCERNER</text>
+            </g>
+            <text class="card" x="448" y="308">(0,n)</text><text class="card" x="448" y="434">(1,1)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="340" y="450" width="205" height="160"/><rect class="head" x="340" y="450" width="205" height="33"/>
+              <text class="title" x="442" y="471" text-anchor="middle">MOUVEMENT_STOCK</text>
+              <text class="key" x="354" y="505"># id_mouvement</text><text x="354" y="524">type_mouvement</text><text x="354" y="543">quantite</text><text x="354" y="562">stock_avant / stock_apres</text><text x="354" y="581">date_mouvement</text><text x="354" y="600">motif</text>
+            </g>
+            <g class="relation">
+              <polygon points="694,461 733,492 694,523 655,492"/><text x="694" y="488">A13</text><text x="694" y="501">ORIGINER</text>
+            </g>
+            <text class="card" x="610" y="482">(0,n)</text><text class="card" x="740" y="482">(0,1)</text>
+
+            <!-- Payment -->
+            <g class="relation">
+              <polygon points="884,461 923,492 884,523 845,492"/><text x="884" y="488">A5</text><text x="884" y="501">REGLER</text>
+            </g>
+            <text class="card" x="797" y="482">(1,1)</text><text class="card" x="930" y="482">(1,1)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="964" y="432" width="185" height="162"/><rect class="head" x="964" y="432" width="185" height="33"/>
+              <text class="title" x="1056" y="453" text-anchor="middle">PAIEMENT</text>
+              <text class="key" x="978" y="487"># id_paiement</text><text x="978" y="506">mode_paiement</text><text x="978" y="525">statut_paiement</text><text x="978" y="544">montant</text><text x="978" y="563">reference_transaction</text><text x="978" y="582">date_confirmation</text>
+            </g>
+            <g class="relation">
+              <polygon points="1121,505 1160,536 1121,567 1082,536"/><text x="1121" y="532">A6</text><text x="1121" y="545">JUSTIFIER</text>
+            </g>
+            <text class="card" x="1063" y="526">(0,1)</text><text class="card" x="1167" y="526">(1,1)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="1190" y="460" width="194" height="152"/><rect class="head" x="1190" y="460" width="194" height="33"/>
+              <text class="title" x="1287" y="481" text-anchor="middle">JUSTIFICATIF_PAIEMENT</text>
+              <text class="key" x="1203" y="515"># id_justificatif</text><text x="1203" y="534">type_document</text><text x="1203" y="553">numero_document</text><text x="1203" y="572">date_emission</text><text x="1203" y="591">chemin_document</text>
+            </g>
+
+            <!-- Delivery + status -->
+            <g class="relation">
+              <polygon points="1060,729 1100,760 1060,791 1020,760"/><text x="1060" y="756">A7</text><text x="1060" y="769">GENERER</text>
+            </g>
+            <text class="card" x="1069" y="687">(0,n)</text><text class="card" x="1069" y="802">(1,1)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="982" y="802" width="156" height="102"/><rect class="head" x="982" y="802" width="156" height="33"/>
+              <text class="title" x="1060" y="823" text-anchor="middle">LIVRAISON</text>
+              <text class="key" x="995" y="855"># id_livraison</text><text x="995" y="874">adresse_livraison</text><text x="995" y="893">statut_livraison</text>
+            </g>
+            <g class="relation">
+              <polygon points="694,675 733,706 694,737 655,706"/><text x="694" y="702">A10</text><text x="694" y="715">HISTORISER</text>
+            </g>
+            <text class="card" x="598" y="696">(1,n)</text><text class="card" x="740" y="696">(1,1)</text>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="778" y="638" width="205" height="132"/><rect class="head" x="778" y="638" width="205" height="33"/>
+              <text class="title" x="880" y="659" text-anchor="middle">HISTORIQUE_STATUT</text>
+              <text class="key" x="791" y="692"># id_historique</text><text x="791" y="711">ancien / nouveau_statut</text><text x="791" y="730">date_changement</text><text x="791" y="749">origine · commentaire</text>
+            </g>
+            <g class="entity" filter="url(#shadow)">
+              <rect x="430" y="758" width="165" height="146"/><rect class="head" x="430" y="758" width="165" height="33"/>
+              <text class="title" x="512" y="779" text-anchor="middle">UTILISATEUR</text>
+              <text class="key" x="443" y="813"># id_utilisateur</text><text x="443" y="832">nom_complet</text><text x="443" y="851">email · telephone</text><text x="443" y="870">mot_de_passe_hash</text><text x="443" y="889">actif</text>
+            </g>
+            <g class="relation">
+              <polygon points="490,677 530,708 490,739 450,708"/><text x="490" y="704">A11</text><text x="490" y="717">EFFECTUER</text>
+            </g>
+            <text class="card" x="498" y="630">(0,n)</text><text class="card" x="498" y="750">(0,1)</text>
+            <rect class="diagram-note" x="1165" y="704" width="212" height="82"/>
+            <text class="diagram-note-text" x="1178" y="725">A8 ASSURER : UTILISATEUR (LIVREUR)</text><text class="diagram-note-text" x="1178" y="742">(0,n) ─────────────── (1,1) LIVRAISON</text><text class="diagram-note-text" x="1178" y="761">A9 AFFECTER : UTILISATEUR (GERANT/ADMIN)</text><text class="diagram-note-text" x="1178" y="778">(0,n) ─────────────── (1,1) LIVRAISON</text>
+          </svg>
+        </div>
+        <div class="legend">
+          <span class="legend-item"><i class="legend-shape"></i> Entité</span>
+          <span class="legend-item"><i class="legend-diamond"></i> Association</span>
+          <span class="legend-item"><i class="legend-card">(0,n)</i> Cardinalité affichée près de l’entité concernée</span>
+          <span class="legend-item">Les associations A8 et A9 sont rappelées dans l’encart pour éviter un croisement illisible.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="mcd-pilotage">
+      <div class="section-heading">
+        <p class="section-kicker">Diagramme 2</p>
+        <h2>MCD — habilitation, notification et pilotage</h2>
+        <p>Ce second diagramme complète le noyau transactionnel avec les droits des comptes internes, les alertes, le paramétrage et la journalisation.</p>
+      </div>
+      <div class="diagram-card">
+        <div class="diagram-top">
+          <div><h3>Fonctions transverses de la plateforme</h3><p><strong>UTILISATEUR</strong>, <strong>CLIENT</strong> et <strong>COMMANDE</strong> sont rappelés comme références du diagramme principal.</p></div>
+          <span class="zoom-hint">Faites défiler horizontalement sur mobile</span>
+        </div>
+        <div class="diagram-scroll">
+          <svg viewBox="0 0 1420 650" role="img" aria-labelledby="support-title support-desc">
+            <title id="support-title">MCD de pilotage de la Poissonnerie Saint-Michel</title>
+            <desc id="support-desc">Diagramme des entités rôle, permission, utilisateur, notification, commande, client, paramétrage et journal d'audit.</desc>
+            <defs><filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#41646c" flood-opacity=".12"/></filter></defs>
+            <path class="link" d="M228 162 H280 M358 162 H405"/>
+            <path class="link" d="M160 250 V325 M160 403 V460"/>
+            <path class="link" d="M565 162 H617 M695 162 H740"/>
+            <path class="link" d="M895 162 H946 M1024 162 H1070"/>
+            <path class="link" d="M805 250 V325 M805 403 V455"/>
+            <path class="link" d="M550 517 H610 M688 517 H735"/>
+            <path class="link dashed" d="M1020 517 H1070 M1148 517 H1200"/>
+
+            <g class="entity" filter="url(#shadow2)"><rect x="70" y="86" width="158" height="150"/><rect class="head" x="70" y="86" width="158" height="33"/><text class="title" x="149" y="107" text-anchor="middle">ROLE</text><text class="key" x="84" y="141"># id_role</text><text x="84" y="160">code_role</text><text x="84" y="179">libelle</text><text x="84" y="198">description</text><text x="84" y="217">est_actif</text></g>
+            <g class="relation"><polygon points="319,131 358,162 319,193 280,162"/><text x="319" y="158">A14</text><text x="319" y="171">ATTRIBUER</text></g><text class="card" x="236" y="152">(0,n)</text><text class="card" x="365" y="152">(1,1)</text>
+            <g class="entity" filter="url(#shadow2)"><rect x="405" y="70" width="160" height="184"/><rect class="head" x="405" y="70" width="160" height="33"/><text class="title" x="485" y="91" text-anchor="middle">UTILISATEUR</text><text class="key" x="419" y="126"># id_utilisateur</text><text x="419" y="145">nom_complet</text><text x="419" y="164">email · telephone</text><text x="419" y="183">mot_de_passe_hash</text><text x="419" y="202">actif</text><text x="419" y="221">dernier_acces</text></g>
+            <g class="relation"><polygon points="160,294 200,325 160,356 120,325"/><text x="160" y="321">A15</text><text x="160" y="334">AUTORISER</text></g><text class="card" x="168" y="282">(0,n)</text><text class="card" x="168" y="368">(0,n)</text>
+            <g class="entity" filter="url(#shadow2)"><rect x="70" y="460" width="180" height="130"/><rect class="head" x="70" y="460" width="180" height="33"/><text class="title" x="160" y="481" text-anchor="middle">PERMISSION</text><text class="key" x="84" y="516"># id_permission</text><text x="84" y="535">code_permission</text><text x="84" y="554">libelle</text><text x="84" y="573">description</text></g>
+
+            <rect class="diagram-note" x="598" y="109" width="112" height="106"/><text class="diagram-note-text" x="610" y="132">Références</text><text class="diagram-note-text" x="610" y="151">A17 : client</text><text class="diagram-note-text" x="610" y="169">A18 : interne</text><text class="diagram-note-text" x="610" y="188">XOR requis</text>
+            <g class="entity" filter="url(#shadow2)"><rect x="740" y="70" width="155" height="184"/><rect class="head" x="740" y="70" width="155" height="33"/><text class="title" x="817" y="91" text-anchor="middle">COMMANDE</text><text class="key" x="753" y="126"># id_commande</text><text x="753" y="145">numero_commande</text><text x="753" y="164">statut_courant</text><text x="753" y="183">mode_retrait</text><text x="753" y="202">montant_total</text><text x="753" y="221">… voir diagramme 1</text></g>
+            <g class="relation"><polygon points="985,131 1024,162 985,193 946,162"/><text x="985" y="158">A16</text><text x="985" y="171">DECLENCHER</text></g><text class="card" x="902" y="152">(0,n)</text><text class="card" x="1031" y="152">(1,1)</text>
+            <g class="entity" filter="url(#shadow2)"><rect x="1070" y="70" width="195" height="184"/><rect class="head" x="1070" y="70" width="195" height="33"/><text class="title" x="1167" y="91" text-anchor="middle">NOTIFICATION</text><text class="key" x="1084" y="126"># id_notification</text><text x="1084" y="145">type_notification · canal</text><text x="1084" y="164">message</text><text x="1084" y="183">date_creation</text><text x="1084" y="202">date_lecture</text><text x="1084" y="221">statut_envoi</text></g>
+
+            <g class="relation"><polygon points="805,294 845,325 805,356 765,325"/><text x="805" y="321">A17</text><text x="805" y="334">RECEVOIR</text></g><text class="card" x="813" y="282">(0,n)</text><text class="card" x="813" y="368">(0,1)</text>
+            <g class="entity" filter="url(#shadow2)"><rect x="730" y="455" width="175" height="130"/><rect class="head" x="730" y="455" width="175" height="33"/><text class="title" x="817" y="476" text-anchor="middle">CLIENT</text><text class="key" x="744" y="511"># id_client</text><text x="744" y="530">nom_complet</text><text x="744" y="549">telephone</text><text x="744" y="568">… voir diagramme 1</text></g>
+            <rect class="diagram-note" x="942" y="312" width="347" height="84"/><text class="diagram-note-text" x="957" y="334">A18 RECEVOIR : UTILISATEUR (0,n) — (0,1) NOTIFICATION</text><text class="diagram-note-text" x="957" y="353">Contrainte XOR : une notification a exactement un destinataire,</text><text class="diagram-note-text" x="957" y="370">soit CLIENT (A17), soit UTILISATEUR (A18), jamais les deux.</text><text class="diagram-note-text" x="957" y="386">Le client est notifié des statuts ; les comptes internes des actions.</text>
+
+            <g class="relation"><polygon points="649,486 688,517 649,548 610,517"/><text x="649" y="513">A19</text><text x="649" y="526">METTRE_A_JOUR</text></g><text class="card" x="572" y="507">(0,n)</text><text class="card" x="695" y="507">(0,n)</text>
+            <g class="entity" filter="url(#shadow2)"><rect x="375" y="455" width="175" height="130"/><rect class="head" x="375" y="455" width="175" height="33"/><text class="title" x="462" y="476" text-anchor="middle">UTILISATEUR</text><text x="389" y="511">référence diagramme 1</text><text x="389" y="530">rôle : ADMINISTRATEUR</text><text x="389" y="549">ou GERANT autorisé</text></g>
+            <g class="entity" filter="url(#shadow2)"><rect x="735" y="455" width="190" height="130"/><rect class="head" x="735" y="455" width="190" height="33"/><text class="title" x="830" y="476" text-anchor="middle">PARAMETRE_BOUTIQUE</text><text class="key" x="749" y="511"># id_parametre</text><text x="749" y="530">nom · adresse · contacts</text><text x="749" y="549">horaires · zones livraison</text><text x="749" y="568">frais_livraison_defaut</text></g>
+            <g class="relation"><polygon points="1109,486 1148,517 1109,548 1070,517"/><text x="1109" y="513">A20</text><text x="1109" y="526">JOURNALISER</text></g><text class="card" x="1026" y="507">(0,n)</text><text class="card" x="1155" y="507">(0,1)</text>
+            <g class="entity" filter="url(#shadow2)"><rect x="1200" y="447" width="190" height="148"/><rect class="head" x="1200" y="447" width="190" height="33"/><text class="title" x="1295" y="468" text-anchor="middle">JOURNAL_AUDIT</text><text class="key" x="1214" y="503"># id_evenement</text><text x="1214" y="522">type_evenement</text><text x="1214" y="541">date_evenement</text><text x="1214" y="560">cible_type · cible_id</text><text x="1214" y="579">donnees_avant / apres</text></g>
+          </svg>
+        </div>
+        <div class="legend"><span class="legend-item">A17 et A18 forment une alternative exclusive (<strong>XOR</strong>) de destinataire.</span><span class="legend-item">A20 conserve l’auteur quand l’action est humaine ; une action système n’a pas d’utilisateur associé.</span></div>
+      </div>
+    </section>
+
+    <section id="relations">
+      <div class="section-heading">
+        <p class="section-kicker">Référentiel des associations</p>
+        <h2>Relations, cardinalités et contraintes</h2>
+        <p>Ce tableau fait foi pour l’implémentation du MLD. Les valeurs entre parenthèses sont placées du point de vue de l’entité située dans la même colonne.</p>
+      </div>
+      <div class="relation-table-wrap">
+        <table>
+          <thead><tr><th>Code / association</th><th>Entité A</th><th>Entité B</th><th>Justification métier</th><th>Contrainte</th></tr></thead>
+          <tbody>
+            <tr><td><span class="relation-id">A1 · CLASSER</span></td><td>CATÉGORIE <span class="cardinality">(0,n)</span></td><td>PRODUIT <span class="cardinality">(1,1)</span></td><td>Une catégorie peut ne contenir encore aucun produit ou en contenir plusieurs ; un produit appartient à une seule catégorie.</td><td class="constraint">Un produit ne peut pas être publié sans catégorie.</td></tr>
+            <tr><td><span class="relation-id">A2 · COMMANDER</span></td><td>CLIENT <span class="cardinality">(0,n)</span></td><td>COMMANDE <span class="cardinality">(1,1)</span></td><td>Un client peut ne jamais commander ou commander plusieurs fois ; toute commande est passée pour un client identifié par ses coordonnées.</td><td class="constraint">Le téléphone est la donnée minimale pour retrouver le client.</td></tr>
+            <tr><td><span class="relation-id">A3 · COMPOSER</span></td><td>COMMANDE <span class="cardinality">(1,n)</span></td><td>LIGNE_COMMANDE <span class="cardinality">(1,1)</span></td><td>Une commande validée contient au moins un article ; une ligne n’appartient qu’à une commande.</td><td class="constraint">Suppression en cascade des lignes si une commande de test est supprimée.</td></tr>
+            <tr><td><span class="relation-id">A4 · RÉFÉRENCER</span></td><td>PRODUIT <span class="cardinality">(0,n)</span></td><td>LIGNE_COMMANDE <span class="cardinality">(1,1)</span></td><td>Un produit peut ne jamais avoir été vendu ou figurer sur de nombreuses lignes ; chaque ligne désigne un produit unique.</td><td class="constraint">Le prix est figé dans la ligne, même si le prix du produit change ensuite.</td></tr>
+            <tr><td><span class="relation-id">A5 · RÉGLER</span></td><td>COMMANDE <span class="cardinality">(1,1)</span></td><td>PAIEMENT <span class="cardinality">(1,1)</span></td><td>À la validation, le client choisit un unique moyen de paiement ; une tentative de paiement ne concerne qu’une commande.</td><td class="constraint">Le statut de paiement permet l’attente, la réussite, l’échec ou l’annulation.</td></tr>
+            <tr><td><span class="relation-id">A6 · JUSTIFIER</span></td><td>PAIEMENT <span class="cardinality">(0,1)</span></td><td>JUSTIFICATIF_PAIEMENT <span class="cardinality">(1,1)</span></td><td>Un paiement en attente ou échoué n’a pas de justificatif. Un paiement confirmé produit une facture Mobile Money ou un reçu espèces.</td><td class="constraint">Type = FACTURE pour Mobile Money ; type = REÇU pour espèces.</td></tr>
+            <tr><td><span class="relation-id">A7 · GÉNÉRER</span></td><td>COMMANDE <span class="cardinality">(0,n)</span></td><td>LIVRAISON <span class="cardinality">(1,1)</span></td><td>Le retrait boutique ne crée aucune livraison. Plusieurs tentatives peuvent être conservées si un livreur refuse ou annule.</td><td class="constraint">Une seule livraison active par commande à un instant donné.</td></tr>
+            <tr><td><span class="relation-id">A8 · ASSURER</span></td><td>UTILISATEUR <span class="cardinality">(0,n)</span><br><span class="optional">rôle LIVREUR</span></td><td>LIVRAISON <span class="cardinality">(1,1)</span></td><td>Un livreur peut n’avoir aucune livraison ou en assurer plusieurs ; une tentative est confiée à un seul livreur.</td><td class="constraint">Seuls les utilisateurs actifs ayant le rôle LIVREUR sont éligibles.</td></tr>
+            <tr><td><span class="relation-id">A9 · AFFECTER</span></td><td>UTILISATEUR <span class="cardinality">(0,n)</span><br><span class="optional">rôle GÉRANT / ADMIN</span></td><td>LIVRAISON <span class="cardinality">(1,1)</span></td><td>Le gérant ou l’administrateur affecte chaque tentative de livraison ; un même responsable peut en affecter plusieurs.</td><td class="constraint">Conserver la date d’affectation dans LIVRAISON.</td></tr>
+            <tr><td><span class="relation-id">A10 · HISTORISER</span></td><td>COMMANDE <span class="cardinality">(1,n)</span></td><td>HISTORIQUE_STATUT <span class="cardinality">(1,1)</span></td><td>Dès sa création, une commande reçoit au moins l’état « En attente » ; chaque événement d’état appartient à une commande unique.</td><td class="constraint">La liste des statuts doit respecter le cycle défini dans le cahier des charges.</td></tr>
+            <tr><td><span class="relation-id">A11 · EFFECTUER</span></td><td>UTILISATEUR <span class="cardinality">(0,n)</span></td><td>HISTORIQUE_STATUT <span class="cardinality">(0,1)</span></td><td>Un employé peut produire plusieurs changements. Le changement peut être fait par le système ou le client, donc l’auteur interne est facultatif.</td><td class="constraint">L’attribut <em>origine</em> distingue SYSTEME, CLIENT, GERANT, LIVREUR.</td></tr>
+            <tr><td><span class="relation-id">A12 · CONCERNER</span></td><td>PRODUIT <span class="cardinality">(0,n)</span></td><td>MOUVEMENT_STOCK <span class="cardinality">(1,1)</span></td><td>Un produit possède une suite de mouvements ; un mouvement porte forcément sur un produit.</td><td class="constraint">Type : ENTREE, SORTIE ou AJUSTEMENT.</td></tr>
+            <tr><td><span class="relation-id">A13 · ORIGINER</span></td><td>LIGNE_COMMANDE <span class="cardinality">(0,n)</span></td><td>MOUVEMENT_STOCK <span class="cardinality">(0,1)</span></td><td>Une ligne peut générer une sortie puis éventuellement un retour ; un mouvement de réapprovisionnement peut ne provenir d’aucune ligne.</td><td class="constraint">Utiliser cette relation pour lier précisément les sorties/retours de vente.</td></tr>
+            <tr><td><span class="relation-id">A14 · ATTRIBUER</span></td><td>ROLE <span class="cardinality">(0,n)</span></td><td>UTILISATEUR <span class="cardinality">(1,1)</span></td><td>Un rôle peut n’être affecté à personne ou à plusieurs comptes ; tout compte interne reçoit un seul rôle opérationnel.</td><td class="constraint">Rôles initiaux : ADMINISTRATEUR, GÉRANT, LIVREUR.</td></tr>
+            <tr><td><span class="relation-id">A15 · AUTORISER</span></td><td>ROLE <span class="cardinality">(0,n)</span></td><td>PERMISSION <span class="cardinality">(0,n)</span></td><td>Un rôle possède plusieurs droits et un droit peut être partagé par plusieurs rôles.</td><td class="constraint">Association porteuse de l’habilitation réelle de l’application.</td></tr>
+            <tr><td><span class="relation-id">A16 · DÉCLENCHER</span></td><td>COMMANDE <span class="cardinality">(0,n)</span></td><td>NOTIFICATION <span class="cardinality">(1,1)</span></td><td>Une commande peut déclencher plusieurs alertes (création, changement de statut, affectation) ; une notification traite un événement de commande.</td><td class="constraint">Éviter les doublons avec un type d’événement et une date de création.</td></tr>
+            <tr><td><span class="relation-id">A17 · NOTIFIER — client</span></td><td>CLIENT <span class="cardinality">(0,n)</span></td><td>NOTIFICATION <span class="cardinality">(0,1)</span></td><td>Un client peut recevoir plusieurs alertes ; une notification peut être destinée au client ou à un compte interne.</td><td class="constraint">XOR avec A18 : un seul destinataire effectif.</td></tr>
+            <tr><td><span class="relation-id">A18 · NOTIFIER — interne</span></td><td>UTILISATEUR <span class="cardinality">(0,n)</span></td><td>NOTIFICATION <span class="cardinality">(0,1)</span></td><td>Le gérant est alerté à la commande, le livreur à l’affectation ; une alerte peut être interne ou client.</td><td class="constraint">XOR avec A17 : un seul destinataire effectif.</td></tr>
+            <tr><td><span class="relation-id">A19 · METTRE À JOUR</span></td><td>UTILISATEUR <span class="cardinality">(0,n)</span></td><td>PARAMETRE_BOUTIQUE <span class="cardinality">(0,n)</span></td><td>Les administrateurs, et éventuellement les gérants autorisés, mettent à jour le paramétrage au fil du temps.</td><td class="constraint">Dans la base, l’occurrence active est unique ; l’historique est tracé par JOURNAL_AUDIT.</td></tr>
+            <tr><td><span class="relation-id">A20 · JOURNALISER</span></td><td>UTILISATEUR <span class="cardinality">(0,n)</span></td><td>JOURNAL_AUDIT <span class="cardinality">(0,1)</span></td><td>Un utilisateur peut provoquer plusieurs événements. Un événement système (ex. décrément automatique) n’a pas forcément d’auteur humain.</td><td class="constraint">La cible est identifiée par <em>cible_type</em> et <em>cible_id</em>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="proprietes">
+      <div class="section-heading">
+        <p class="section-kicker">Dictionnaire de données</p>
+        <h2>Entités et utilité de chaque propriété</h2>
+        <p>Les propriétés marquées <strong>#</strong> identifient de manière unique une occurrence. Les valeurs entre crochets décrivent les valeurs attendues ou la règle de saisie.</p>
+      </div>
+      <nav class="entity-index" aria-label="Accès aux entités">
+        <a href="#e-categorie">Catégorie</a><a href="#e-produit">Produit</a><a href="#e-client">Client</a><a href="#e-commande">Commande</a><a href="#e-ligne">Ligne commande</a><a href="#e-paiement">Paiement</a><a href="#e-justificatif">Justificatif</a><a href="#e-livraison">Livraison</a><a href="#e-stock">Mouvement stock</a><a href="#e-historique">Historique statut</a><a href="#e-utilisateur">Utilisateur</a><a href="#e-role">Rôle</a><a href="#e-permission">Permission</a><a href="#e-notification">Notification</a><a href="#e-parametre">Paramètre boutique</a><a href="#e-audit">Journal audit</a>
+      </nav>
+      <div class="entity-grid">
+
+        <article class="entity-card" id="e-categorie"><div class="entity-card-head"><h3>CATÉGORIE</h3><span>Catalogue</span></div><p class="entity-purpose">Regroupe les produits pour la navigation client et le pilotage des ventes.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_categorie</span><span class="utility">Identifiant stable et unique de la catégorie.</span></li><li><span class="property">libelle</span><span class="utility">Nom affiché : Poissons, Viandes, Œufs, etc.</span></li><li><span class="property">description <span class="tag">optionnel</span></span><span class="utility">Présente la catégorie au client et aide au référencement.</span></li><li><span class="property">est_active</span><span class="utility">Masque une catégorie sans supprimer son historique.</span></li><li><span class="property">created_at / updated_at</span><span class="utility">Date la création et la dernière modification du catalogue.</span></li></ul></article>
+
+        <article class="entity-card" id="e-produit"><div class="entity-card-head"><h3>PRODUIT</h3><span>Catalogue &amp; stock</span></div><p class="entity-purpose">Décrit un article vendable et son niveau de stock disponible.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_produit</span><span class="utility">Identifiant unique du produit.</span></li><li><span class="property">libelle</span><span class="utility">Nom commercial affiché, par exemple « Tilapia » ou « Ailerons ».</span></li><li><span class="property">description <span class="tag">optionnel</span></span><span class="utility">Détaille le produit sur sa fiche client.</span></li><li><span class="property">prix_unitaire</span><span class="utility">Prix courant servant de référence lors de l’ajout au panier.</span></li><li><span class="property">unite_vente</span><span class="utility">Précise l’unité facturée : kg, carton, alvéole, unité, etc.</span></li><li><span class="property">quantite_stock</span><span class="utility">Solde courant disponible ; il est mis à jour par les mouvements de stock.</span></li><li><span class="property">seuil_alerte</span><span class="utility">Quantité minimale à partir de laquelle le système signale un stock bas.</span></li><li><span class="property">photo_url <span class="tag">optionnel</span></span><span class="utility">Chemin ou URL de l’image affichée dans le catalogue.</span></li><li><span class="property">est_actif</span><span class="utility">Autorise ou bloque la vente sans perdre l’historique des lignes passées.</span></li><li><span class="property">created_at / updated_at</span><span class="utility">Trace la création et les changements de la fiche produit.</span></li></ul></article>
+
+        <article class="entity-card" id="e-client"><div class="entity-card-head"><h3>CLIENT</h3><span>Sans compte</span></div><p class="entity-purpose">Conserve les coordonnées utilisées lors d’une commande, sans créer de compte d’authentification.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_client</span><span class="utility">Identifiant interne de la fiche client.</span></li><li><span class="property">nom_complet</span><span class="utility">Identifie le client pour la préparation, le retrait et la livraison.</span></li><li><span class="property">telephone</span><span class="utility">Contact principal, recherche possible du client et moyen de suivi de commande.</span></li><li><span class="property">email <span class="tag">optionnel</span></span><span class="utility">Permet l’envoi d’une facture ou de notifications si le client le renseigne.</span></li><li><span class="property">created_at / updated_at</span><span class="utility">Indique la première commande connue et la dernière mise à jour des coordonnées.</span></li></ul></article>
+
+        <article class="entity-card" id="e-commande"><div class="entity-card-head"><h3>COMMANDE</h3><span>Transaction</span></div><p class="entity-purpose">Porte le récapitulatif commercial, le choix de récupération et l’état courant d’une vente.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_commande</span><span class="utility">Identifiant interne unique de la commande.</span></li><li><span class="property">numero_commande</span><span class="utility">Référence publique, unique, communiquée au client pour le suivi et le paiement espèces.</span></li><li><span class="property">date_commande</span><span class="utility">Horodate la validation et alimente les statistiques de recettes.</span></li><li><span class="property">statut_courant</span><span class="utility">État affiché rapidement au client et au gérant : EN_ATTENTE, EN_TRAITEMENT, TRAITEE, EN_LIVRAISON, LIVREE.</span></li><li><span class="property">mode_retrait</span><span class="utility">Choix du client : LIVRAISON ou RETRAIT_BOUTIQUE ; détermine si une livraison est nécessaire.</span></li><li><span class="property">total_produits</span><span class="utility">Somme des sous-totaux des lignes, avant les frais de livraison.</span></li><li><span class="property">frais_livraison</span><span class="utility">Montant de la prestation de livraison appliqué à cette commande.</span></li><li><span class="property">montant_total</span><span class="utility">Montant final à payer, conservé comme instantané de la transaction.</span></li><li><span class="property">note_client <span class="tag">optionnel</span></span><span class="utility">Instruction utile à la préparation ou à la livraison.</span></li><li><span class="property">confirmation_reception</span><span class="utility">Mémorise la validation du client qui clôt la commande livrée.</span></li><li><span class="property">date_confirmation_reception <span class="tag">optionnel</span></span><span class="utility">Date la confirmation de réception effective.</span></li></ul></article>
+
+        <article class="entity-card" id="e-ligne"><div class="entity-card-head"><h3>LIGNE_COMMANDE</h3><span>Détail de vente</span></div><p class="entity-purpose">Conserve chaque produit et la valeur qui lui était applicable dans une commande donnée.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_ligne_commande</span><span class="utility">Identifiant unique de la ligne de détail.</span></li><li><span class="property">quantite</span><span class="utility">Quantité commandée dans l’unité de vente du produit.</span></li><li><span class="property">prix_unitaire_applique</span><span class="utility">Prix figé à la validation, indispensable pour ne pas réécrire l’historique après une variation de prix.</span></li><li><span class="property">sous_total</span><span class="utility">Quantité × prix appliqué ; simplifie le contrôle et l’affichage du récapitulatif.</span></li><li><span class="property">created_at</span><span class="utility">Horodate la création du détail lors de la validation de commande.</span></li></ul></article>
+
+        <article class="entity-card" id="e-paiement"><div class="entity-card-head"><h3>PAIEMENT</h3><span>Règlement</span></div><p class="entity-purpose">Suit le moyen de paiement choisi et la confirmation effective du règlement.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_paiement</span><span class="utility">Identifiant de la tentative de paiement liée à la commande.</span></li><li><span class="property">mode_paiement</span><span class="utility">Canal choisi : MTN_MOMO, MOOV_MONEY, CELTIS_CASH ou ESPECES.</span></li><li><span class="property">statut_paiement</span><span class="utility">État opérationnel : EN_ATTENTE, REUSSI, ECHOUE ou ANNULE.</span></li><li><span class="property">montant</span><span class="utility">Montant attendu/encaissé, contrôlé contre le montant total de la commande.</span></li><li><span class="property">reference_transaction <span class="tag">optionnel</span></span><span class="utility">Référence retournée par l’opérateur Mobile Money ou saisie par le gérant.</span></li><li><span class="property">date_initiation</span><span class="utility">Horodate le lancement de la demande de paiement.</span></li><li><span class="property">date_confirmation <span class="tag">optionnel</span></span><span class="utility">Horodate l’encaissement réel, nécessaire aux recettes.</span></li></ul></article>
+
+        <article class="entity-card" id="e-justificatif"><div class="entity-card-head"><h3>JUSTIFICATIF_PAIEMENT</h3><span>Facture / reçu</span></div><p class="entity-purpose">Représente le document téléchargeable ou remis au client après confirmation du paiement.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_justificatif</span><span class="utility">Identifiant interne du document généré.</span></li><li><span class="property">type_document</span><span class="utility">Distingue FACTURE (Mobile Money) et RECU (espèces).</span></li><li><span class="property">numero_document</span><span class="utility">Référence légale/comptable unique imprimée sur le document.</span></li><li><span class="property">date_emission</span><span class="utility">Date de génération du justificatif.</span></li><li><span class="property">chemin_document</span><span class="utility">Emplacement sécurisé du PDF ou du fichier téléchargeable.</span></li></ul></article>
+
+        <article class="entity-card" id="e-livraison"><div class="entity-card-head"><h3>LIVRAISON</h3><span>Exécution</span></div><p class="entity-purpose">Conserve une tentative de livraison, son adresse, son livreur et son avancement.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_livraison</span><span class="utility">Identifiant unique d’une tentative de livraison.</span></li><li><span class="property">adresse_livraison</span><span class="utility">Adresse saisie pour cette commande ; elle reste historique même si le client commande ensuite ailleurs.</span></li><li><span class="property">contact_livraison</span><span class="utility">Téléphone à utiliser par le livreur, éventuellement différent du téléphone principal.</span></li><li><span class="property">statut_livraison</span><span class="utility">Suit AFFECTEE, ACCEPTEE, REFUSEE, EN_COURS, LIVREE ou ANNULEE.</span></li><li><span class="property">date_affectation</span><span class="utility">Horodate la remise de la course au livreur.</span></li><li><span class="property">date_acceptation <span class="tag">optionnel</span></span><span class="utility">Prouve l’acceptation par le livreur.</span></li><li><span class="property">date_depart <span class="tag">optionnel</span></span><span class="utility">Début réel du trajet ; permet le suivi « en cours de livraison ».</span></li><li><span class="property">date_livraison <span class="tag">optionnel</span></span><span class="utility">Date de remise effective de la commande.</span></li><li><span class="property">motif_refus_annulation <span class="tag">optionnel</span></span><span class="utility">Explique un refus ou une annulation et justifie une nouvelle tentative.</span></li></ul></article>
+
+        <article class="entity-card" id="e-stock"><div class="entity-card-head"><h3>MOUVEMENT_STOCK</h3><span>Traçabilité</span></div><p class="entity-purpose">Journalise toute entrée, sortie ou correction afin que le stock soit explicable.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_mouvement_stock</span><span class="utility">Identifiant unique du mouvement.</span></li><li><span class="property">type_mouvement</span><span class="utility">Nature : ENTREE (réapprovisionnement), SORTIE (vente) ou AJUSTEMENT.</span></li><li><span class="property">quantite</span><span class="utility">Nombre d’unités ajoutées, retirées ou ajustées.</span></li><li><span class="property">stock_avant</span><span class="utility">Solde constaté avant le mouvement pour pouvoir contrôler les écarts.</span></li><li><span class="property">stock_apres</span><span class="utility">Solde obtenu après le mouvement, utile pour audit et diagnostic.</span></li><li><span class="property">date_mouvement</span><span class="utility">Horodate l’opération dans l’historique de stock.</span></li><li><span class="property">motif</span><span class="utility">Explique le mouvement : réapprovisionnement, validation commande, retour, inventaire, perte…</span></li><li><span class="property">reference_source <span class="tag">optionnel</span></span><span class="utility">Référence textuelle complémentaire (bon fournisseur, inventaire, etc.).</span></li></ul></article>
+
+        <article class="entity-card" id="e-historique"><div class="entity-card-head"><h3>HISTORIQUE_STATUT</h3><span>Suivi commande</span></div><p class="entity-purpose">Garde la trace chronologique de chaque changement du cycle de commande.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_historique_statut</span><span class="utility">Identifiant de l’événement de changement d’état.</span></li><li><span class="property">ancien_statut <span class="tag">optionnel</span></span><span class="utility">État précédent ; vide lors de la création de la commande.</span></li><li><span class="property">nouveau_statut</span><span class="utility">État atteint après l’action, utilisé pour reconstruire le parcours.</span></li><li><span class="property">date_changement</span><span class="utility">Horodate exacte du passage d’état.</span></li><li><span class="property">origine</span><span class="utility">Indique si l’action vient du SYSTEME, du CLIENT, d’un GERANT ou d’un LIVREUR.</span></li><li><span class="property">commentaire <span class="tag">optionnel</span></span><span class="utility">Précision utile pour l’équipe ou le client, notamment lors d’une anomalie.</span></li></ul></article>
+
+        <article class="entity-card" id="e-utilisateur"><div class="entity-card-head"><h3>UTILISATEUR</h3><span>Compte interne</span></div><p class="entity-purpose">Représente seulement les personnes qui se connectent : administrateur, gérant et livreur.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_utilisateur</span><span class="utility">Identifiant unique du compte interne.</span></li><li><span class="property">nom_complet</span><span class="utility">Identifie la personne dans les écrans et les traces.</span></li><li><span class="property">email</span><span class="utility">Identifiant de connexion possible et canal de communication.</span></li><li><span class="property">telephone</span><span class="utility">Identifiant de connexion alternatif et moyen de contact opérationnel.</span></li><li><span class="property">mot_de_passe_hash</span><span class="utility">Empreinte sécurisée du mot de passe ; le mot de passe brut ne doit jamais être stocké.</span></li><li><span class="property">actif</span><span class="utility">Désactive l’accès d’un employé sans supprimer ses historiques.</span></li><li><span class="property">dernier_acces <span class="tag">optionnel</span></span><span class="utility">Aide au suivi de sécurité et à l’administration des comptes.</span></li><li><span class="property">created_at / updated_at</span><span class="utility">Trace le cycle de vie du compte.</span></li></ul></article>
+
+        <article class="entity-card" id="e-role"><div class="entity-card-head"><h3>ROLE</h3><span>Habilitation</span></div><p class="entity-purpose">Définit le profil fonctionnel unique attribué à chaque compte interne.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_role</span><span class="utility">Identifiant unique du rôle.</span></li><li><span class="property">code_role</span><span class="utility">Code stable pour la programmation : ADMINISTRATEUR, GERANT, LIVREUR.</span></li><li><span class="property">libelle</span><span class="utility">Nom lisible du rôle dans le back-office.</span></li><li><span class="property">description</span><span class="utility">Résume les responsabilités prévues par le cahier des charges.</span></li><li><span class="property">est_actif</span><span class="utility">Permet de ne plus attribuer un rôle devenu obsolète.</span></li></ul></article>
+
+        <article class="entity-card" id="e-permission"><div class="entity-card-head"><h3>PERMISSION</h3><span>Habilitation</span></div><p class="entity-purpose">Découpe précisément ce que les rôles sont autorisés à faire dans l’application.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_permission</span><span class="utility">Identifiant unique du droit.</span></li><li><span class="property">code_permission</span><span class="utility">Code stable exploité par le contrôle d’accès, par exemple <em>GERER_PRODUITS</em>.</span></li><li><span class="property">libelle</span><span class="utility">Nom lisible du droit dans l’interface d’administration.</span></li><li><span class="property">description</span><span class="utility">Explique l’action et son périmètre fonctionnel.</span></li></ul></article>
+
+        <article class="entity-card" id="e-notification"><div class="entity-card-head"><h3>NOTIFICATION</h3><span>Communication</span></div><p class="entity-purpose">Mémorise une alerte liée à une commande, adressée soit au client soit à un compte interne.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_notification</span><span class="utility">Identifiant unique de l’alerte.</span></li><li><span class="property">type_notification</span><span class="utility">Catégorise l’événement : NOUVELLE_COMMANDE, AFFECTATION, CHANGEMENT_STATUT…</span></li><li><span class="property">canal</span><span class="utility">Mode d’envoi : WEB, EMAIL ou SMS selon l’implémentation retenue.</span></li><li><span class="property">message</span><span class="utility">Contenu affiché ou envoyé au destinataire.</span></li><li><span class="property">date_creation</span><span class="utility">Horodate la génération de l’alerte.</span></li><li><span class="property">date_lecture <span class="tag">optionnel</span></span><span class="utility">Indique quand une notification interne ou web a été consultée.</span></li><li><span class="property">statut_envoi</span><span class="utility">Suit la préparation, l’envoi, l’échec ou la lecture selon le canal.</span></li></ul></article>
+
+        <article class="entity-card" id="e-parametre"><div class="entity-card-head"><h3>PARAMETRE_BOUTIQUE</h3><span>Configuration</span></div><p class="entity-purpose">Regroupe les paramètres généraux de la poissonnerie configurables par l’administration.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_parametre</span><span class="utility">Identifiant de l’enregistrement de configuration ; une occurrence active est attendue.</span></li><li><span class="property">nom_boutique</span><span class="utility">Nom affiché dans l’application, les factures et les reçus.</span></li><li><span class="property">adresse_boutique</span><span class="utility">Adresse de retrait et information légale du commerce.</span></li><li><span class="property">telephone_boutique</span><span class="utility">Contact officiel présenté aux clients.</span></li><li><span class="property">email_boutique <span class="tag">optionnel</span></span><span class="utility">Adresse expéditrice ou contact électronique de la boutique.</span></li><li><span class="property">horaires</span><span class="utility">Informations d’ouverture affichées au client.</span></li><li><span class="property">zones_livraison</span><span class="utility">Délimite les secteurs desservis, sous forme structurée ou textuelle.</span></li><li><span class="property">frais_livraison_defaut</span><span class="utility">Valeur proposée pour calculer les frais avant éventuelle adaptation.</span></li><li><span class="property">est_livraison_active</span><span class="utility">Active ou suspend temporairement l’option de livraison à domicile.</span></li><li><span class="property">updated_at</span><span class="utility">Horodate la dernière modification de la configuration.</span></li></ul></article>
+
+        <article class="entity-card" id="e-audit"><div class="entity-card-head"><h3>JOURNAL_AUDIT</h3><span>Traçabilité technique</span></div><p class="entity-purpose">Journalise les actions critiques demandées : paiement, changement de statut, mouvement de stock, paramétrage et accès sensible.</p><ul class="property-list"><li><span class="property"><span class="marker">#</span>id_evenement</span><span class="utility">Identifiant unique de l’événement d’audit.</span></li><li><span class="property">type_evenement</span><span class="utility">Nature de l’action, par exemple PAIEMENT_CONFIRME ou STOCK_AJUSTÉ.</span></li><li><span class="property">date_evenement</span><span class="utility">Horodate l’événement pour les contrôles et investigations.</span></li><li><span class="property">cible_type</span><span class="utility">Type d’objet concerné : COMMANDE, PAIEMENT, PRODUIT, LIVRAISON, etc.</span></li><li><span class="property">cible_id</span><span class="utility">Identifiant de l’objet concerné ; avec <em>cible_type</em>, permet de retrouver la cible.</span></li><li><span class="property">donnees_avant <span class="tag">optionnel</span></span><span class="utility">Instantané des valeurs avant action lorsque celui-ci est utile à l’audit.</span></li><li><span class="property">donnees_apres <span class="tag">optionnel</span></span><span class="utility">Instantané des valeurs après action pour expliquer la modification.</span></li><li><span class="property">adresse_ip <span class="tag">optionnel</span></span><span class="utility">Contexte technique de sécurité lorsque l’action provient d’un utilisateur connecté.</span></li></ul></article>
+      </div>
+    </section>
+
+    <section id="regles">
+      <div class="section-heading">
+        <p class="section-kicker">Règles complémentaires</p>
+        <h2>Contraintes à faire respecter par l’application</h2>
+        <p>Ces règles complètent les cardinalités : elles devront être mises en œuvre dans les validations PHP, les transactions MySQL et les contrôles d’accès.</p>
+      </div>
+      <div class="rules">
+        <article class="rule"><strong><span class="number">1</span>Prix et montants historiques</strong><p>Le prix de la ligne est copié depuis le produit au moment de la validation. Le total de la commande est calculé à partir des lignes et des frais ; il ne dépend pas d’un futur changement de prix catalogue.</p></article>
+        <article class="rule"><strong><span class="number">2</span>Stock transactionnel</strong><p>La validation d’une commande crée les mouvements de sortie et décrémente le stock dans une même transaction. Toute annulation validée crée le mouvement correctif approprié.</p></article>
+        <article class="rule"><strong><span class="number">3</span>Cycle de commande</strong><p>Transitions autorisées : EN_ATTENTE → EN_TRAITEMENT → TRAITEE → EN_LIVRAISON → LIVREE. L’historique est la preuve ; <em>statut_courant</em> est une valeur de lecture rapide.</p></article>
+        <article class="rule"><strong><span class="number">4</span>Livraison conditionnelle</strong><p>Une adresse et une livraison sont obligatoires seulement si <em>mode_retrait = LIVRAISON</em>. Avec RETRAIT_BOUTIQUE, aucune livraison ne doit être créée.</p></article>
+        <article class="rule"><strong><span class="number">5</span>Confirmation de paiement</strong><p>Une facture/reçu n’est créé qu’après paiement réussi. Pour les espèces, le gérant confirme l’encaissement avant l’émission du reçu.</p></article>
+        <article class="rule"><strong><span class="number">6</span>Destinataire d’alerte</strong><p>Une notification possède exactement un destinataire. Les deux relations CLIENT et UTILISATEUR sont exclusives (XOR) et ne doivent jamais être remplies simultanément.</p></article>
+        <article class="rule"><strong><span class="number">7</span>Comptes internes uniquement</strong><p>CLIENT ne porte ni mot de passe ni rôle. Seuls UTILISATEUR, ROLE et PERMISSION participent au contrôle d’accès sécurisé de l’espace interne.</p></article>
+        <article class="rule"><strong><span class="number">8</span>Contrôle des rôles</strong><p>Seul un LIVREUR actif peut assurer une livraison. Seul un GERANT ou ADMINISTRATEUR autorisé peut l’affecter ; l’administration garde les droits de configuration.</p></article>
+        <article class="rule"><strong><span class="number">9</span>Protection des données</strong><p>Le mot de passe est stocké sous forme de hash. Les données client ne sont utilisées que pour traiter, livrer, suivre et justifier les commandes, conformément au besoin exprimé.</p></article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <button class="print" type="button" onclick="window.print()">Imprimer / Exporter PDF</button>
+      <p><strong>Livrable :</strong> MCD fonctionnel de la plateforme Poissonnerie Saint‑Michel. Ce document est prêt à servir de base à la traduction en MLD MySQL (clés étrangères, tables d’association, contraintes et index).</p>
+    </footer>
+  </main>
+</body>
+</html>

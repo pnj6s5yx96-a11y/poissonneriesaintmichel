@@ -1,0 +1,12 @@
+<?php
+declare(strict_types=1);
+
+// Configuration MySQL par défaut de XAMPP. Copiez ce fichier vers
+// database.local.php puis adaptez-le si votre installation diffère.
+return [
+    'host' => '127.0.0.1',
+    'port' => '3306',
+    'database' => 'poissonnerie_saint_michel',
+    'username' => 'root',
+    'password' => '',
+];

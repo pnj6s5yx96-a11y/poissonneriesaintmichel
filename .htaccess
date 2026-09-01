@@ -1,0 +1,22 @@
+Options -Indexes
+
+<FilesMatch "\.(env|ini|log|sql|bak|old|swp|dist|phar)$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(?:config|includes|sql|\.git|\.svn)(?:/|$) - [F,L,NC]
+  RewriteRule ^(?:database_.*\.sql|.*\.(?:env|ini|log|sql|bak|old|swp|dist|phar))$ - [F,L,NC]
+  RewriteRule ^assets/uploads/.*\.(?:php[0-9s]?|phtml|phar|cgi|pl|asp|aspx|jsp)$ - [F,L,NC]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), geolocation=(), microphone=(), payment=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-origin"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+</IfModule>
