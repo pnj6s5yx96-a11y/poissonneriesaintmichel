@@ -54,10 +54,31 @@ function invoicePdfPage(
         $content .= invoicePdfText(42, 717, 9, 'Tel. ' . (string) $settings['telephone_boutique'], 'F1', [0.88, 0.95, 0.92]);
     }
 
-    $content .= invoicePdfText(413, 790, 11, 'FACTURE', 'F2', [1, 1, 1]);
-    $content .= invoicePdfText(413, 765, 15, 'Commande ' . (string) ($invoice['numero_commande'] ?? ''), 'F2', [1, 1, 1]);
-    $content .= invoicePdfText(413, 740, 9, 'Facture ' . (string) ($invoice['numero_document'] ?? ''), 'F1', [0.88, 0.95, 0.92]);
-    $content .= invoicePdfText(413, 721, 8, date('d/m/Y - H:i', strtotime((string) ($invoice['date_emission'] ?? 'now'))), 'F1', [0.88, 0.95, 0.92]);
+    // Le bloc de référence reste entièrement dans la largeur imprimable :
+    // 42 pt de marge à droite, y compris pour les numéros de commande longs.
+    $referenceX = 326.0;
+    $referenceWidth = 227.0;
+    $content .= invoicePdfText($referenceX, 790, 11, 'FACTURE', 'F2', [1, 1, 1]);
+    $content .= invoicePdfText($referenceX, 770, 8, 'NUMERO DE COMMANDE', 'F1', [0.88, 0.95, 0.92]);
+    $content .= invoicePdfTextWithin(
+        $referenceX,
+        752,
+        10,
+        (string) ($invoice['numero_commande'] ?? ''),
+        'F2',
+        [1, 1, 1],
+        $referenceWidth
+    );
+    $content .= invoicePdfTextWithin(
+        $referenceX,
+        734,
+        8,
+        'Facture ' . (string) ($invoice['numero_document'] ?? ''),
+        'F1',
+        [0.88, 0.95, 0.92],
+        $referenceWidth
+    );
+    $content .= invoicePdfText($referenceX, 716, 8, date('d/m/Y - H:i', strtotime((string) ($invoice['date_emission'] ?? 'now'))), 'F1', [0.88, 0.95, 0.92]);
 
     if ($isFirstPage) {
         $content .= invoicePdfFillRect(42, 586, 244, 64, [0.95, 0.98, 0.96]);
@@ -174,6 +195,40 @@ function invoicePdfText(float $x, float $y, float $size, string $text, string $f
         $color[2],
         $font,
         $size,
+        $x,
+        $y,
+        invoicePdfEscape($text)
+    );
+}
+
+/**
+ * Écrit une référence sans dépasser sa colonne, sans la tronquer.
+ * La mise à l'échelle horizontale conserve la marge droite du PDF.
+ *
+ * @param list<float> $color
+ */
+function invoicePdfTextWithin(
+    float $x,
+    float $y,
+    float $size,
+    string $text,
+    string $font,
+    array $color,
+    float $maximumWidth
+): string {
+    $characters = max(1, mb_strwidth($text, 'UTF-8'));
+    // Estimation volontairement prudente pour les polices Helvetica intégrées.
+    $estimatedWidth = $characters * $size * 0.72;
+    $horizontalScale = min(100.0, ($maximumWidth / $estimatedWidth) * 100.0);
+
+    return sprintf(
+        "%.3F %.3F %.3F rg\nBT /%s %.1F Tf %.1F Tz %.1F %.1F Td (%s) Tj ET\n",
+        $color[0],
+        $color[1],
+        $color[2],
+        $font,
+        $size,
+        $horizontalScale,
         $x,
         $y,
         invoicePdfEscape($text)
