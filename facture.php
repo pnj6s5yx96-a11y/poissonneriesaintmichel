@@ -64,13 +64,13 @@ if (queryString('telecharger', 5) === '1') {
     exit;
 }
 
-$pageTitle = 'Facture ' . $invoice['numero_document'];
+$pageTitle = 'Commande ' . $invoice['numero_commande'] . ' — Facture ' . $invoice['numero_document'];
 $activePage = 'paiement';
 require __DIR__ . '/includes/header.php';
 ?>
 <section class="invoice-page section">
   <div class="invoice-page__top"><div><span class="invoice-page__brand"><?= e((string) $settings['nom_boutique']) ?></span><p><?= e((string) $settings['adresse_boutique']) ?></p></div><span class="invoice-page__tag">FACTURE</span></div>
-  <div class="invoice-page__heading"><div><h1><?= e((string) $invoice['numero_document']) ?></h1><p>Émise le <?= e(date('d/m/Y à H:i', strtotime((string) $invoice['date_emission']))) ?></p></div><div><strong><?= e((string) $invoice['client']) ?></strong><span><?= e((string) $invoice['telephone']) ?></span><?php if (!empty($invoice['email'])): ?><span><?= e((string) $invoice['email']) ?></span><?php endif; ?></div></div>
+  <div class="invoice-page__heading"><div><p>Numéro de commande</p><h1><?= e((string) $invoice['numero_commande']) ?></h1><p>Facture n° <?= e((string) $invoice['numero_document']) ?> · Émise le <?= e(date('d/m/Y à H:i', strtotime((string) $invoice['date_emission']))) ?></p></div><div><strong><?= e((string) $invoice['client']) ?></strong><span><?= e((string) $invoice['telephone']) ?></span><?php if (!empty($invoice['email'])): ?><span><?= e((string) $invoice['email']) ?></span><?php endif; ?></div></div>
   <div class="data-table-wrap"><table class="data-table invoice-table"><thead><tr><th>Article</th><th>Quantité</th><th>Prix unitaire</th><th>Total</th></tr></thead><tbody>
     <?php foreach ($lines as $line): ?><tr><td><strong><?= e((string) $line['libelle']) ?></strong></td><td><?= number_format((float) $line['quantite'], 3, ',', ' ') ?> <?= e(mb_strtolower((string) $line['unite_vente'])) ?></td><td><?= e(moneyFcfa($line['prix_unitaire_applique'])) ?></td><td><?= e(moneyFcfa($line['sous_total'])) ?></td></tr><?php endforeach; ?>
   </tbody></table></div>

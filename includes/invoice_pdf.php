@@ -55,8 +55,8 @@ function invoicePdfPage(
     }
 
     $content .= invoicePdfText(413, 790, 11, 'FACTURE', 'F2', [1, 1, 1]);
-    $content .= invoicePdfText(413, 765, 15, (string) ($invoice['numero_document'] ?? ''), 'F2', [1, 1, 1]);
-    $content .= invoicePdfText(413, 740, 9, 'Commande ' . (string) ($invoice['numero_commande'] ?? ''), 'F1', [0.88, 0.95, 0.92]);
+    $content .= invoicePdfText(413, 765, 15, 'Commande ' . (string) ($invoice['numero_commande'] ?? ''), 'F2', [1, 1, 1]);
+    $content .= invoicePdfText(413, 740, 9, 'Facture ' . (string) ($invoice['numero_document'] ?? ''), 'F1', [0.88, 0.95, 0.92]);
     $content .= invoicePdfText(413, 721, 8, date('d/m/Y - H:i', strtotime((string) ($invoice['date_emission'] ?? 'now'))), 'F1', [0.88, 0.95, 0.92]);
 
     if ($isFirstPage) {
