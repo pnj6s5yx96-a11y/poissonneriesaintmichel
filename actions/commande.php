@@ -78,6 +78,7 @@ try {
 
     $items = [];
     foreach ($productIds as $index => $productId) {
+        $productId = (string) $productId;
         $id = preg_match('/^[0-9]+$/', $productId) === 1
             ? filter_var($productId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
             : false;

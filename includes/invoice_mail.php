@@ -89,21 +89,24 @@ function sendInvoiceRecoveryEmail(string $recipient, array $invoices, array $set
         if ($transport['transport'] === 'smtp') {
             return invoiceMailSendViaSmtp($message, $transport);
         }
+        if ($transport['transport'] === 'file') {
+            return invoiceMailSaveToOutbox($message, $transport);
+        }
 
         return @mail($message['to'], $message['subject'], $message['body'], $message['headers']);
     } catch (Throwable $exception) {
         error_log('Échec d’envoi de facture par e-mail : ' . $exception->getMessage());
 
-        return false;
+        throw $exception;
     }
 }
 
 /**
- * Lit les identifiants d’envoi locaux. Sans configuration SMTP, l’ancien
- * transport PHP mail() reste disponible pour les hébergements qui le gèrent.
+ * Lit le transport d’envoi local. Sans configuration, le transport PHP
+ * mail() reste disponible pour les hébergements qui le gèrent.
  *
  * @param array<string, mixed> $settings
- * @return array{transport: 'native'|'smtp', from_address: string, from_name: string, host?: string, port?: int, encryption?: 'tls'|'ssl', username?: string, password?: string, timeout?: int}
+ * @return array{transport: 'native'|'smtp'|'file', from_address: string, from_name: string, host?: string, port?: int, encryption?: 'tls'|'ssl', username?: string, password?: string, timeout?: int, outbox_path?: string}
  */
 function invoiceMailTransportConfig(array $settings): array
 {
@@ -118,7 +121,28 @@ function invoiceMailTransportConfig(array $settings): array
     }
 
     $configured = require $configPath;
-    if (!is_array($configured) || ($configured['transport'] ?? '') !== 'smtp') {
+    if (!is_array($configured)) {
+        throw new RuntimeException('La configuration SMTP locale est invalide.');
+    }
+
+    $configuredTransport = (string) ($configured['transport'] ?? '');
+    if ($configuredTransport === 'file') {
+        $outboxPath = trim((string) ($configured['outbox_path'] ?? ''));
+        $fromAddress = mb_strtolower(trim((string) ($configured['from_address'] ?? $default['from_address'])));
+        $fromName = invoiceMailHeaderText((string) ($configured['from_name'] ?? $default['from_name']));
+        if ($outboxPath === '' || str_contains($outboxPath, "\0")
+            || !filter_var($fromAddress, FILTER_VALIDATE_EMAIL)) {
+            throw new RuntimeException('La configuration de la boîte d’envoi locale est invalide.');
+        }
+
+        return [
+            'transport' => 'file',
+            'from_address' => $fromAddress,
+            'from_name' => $fromName,
+            'outbox_path' => $outboxPath,
+        ];
+    }
+    if ($configuredTransport !== 'smtp') {
         throw new RuntimeException('La configuration SMTP locale est invalide.');
     }
 
@@ -126,7 +150,7 @@ function invoiceMailTransportConfig(array $settings): array
     $port = filter_var($configured['port'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 65535]]);
     $encryption = (string) ($configured['encryption'] ?? 'tls');
     $username = mb_strtolower(trim((string) ($configured['username'] ?? '')));
-    $password = (string) ($configured['password'] ?? '');
+    $password = invoiceMailSmtpPassword((string) ($configured['password'] ?? ''), $host);
     $fromAddress = mb_strtolower(trim((string) ($configured['from_address'] ?? $username)));
     $fromName = invoiceMailHeaderText((string) ($configured['from_name'] ?? $default['from_name']));
     $timeout = filter_var($configured['timeout'] ?? 15, FILTER_VALIDATE_INT, ['options' => ['min_range' => 5, 'max_range' => 60]]);
@@ -138,6 +162,10 @@ function invoiceMailTransportConfig(array $settings): array
         || !filter_var($username, FILTER_VALIDATE_EMAIL) || $password === ''
         || !filter_var($fromAddress, FILTER_VALIDATE_EMAIL) || $timeout === false) {
         throw new RuntimeException('Les paramètres SMTP sont incomplets ou invalides.');
+    }
+    if (strcasecmp($host, 'smtp.gmail.com') === 0
+        && preg_match('/^[A-Za-z0-9]{16}$/', $password) !== 1) {
+        throw new RuntimeException('Le mot de passe d’application Gmail est invalide. Il doit contenir exactement les 16 caractères fournis par Google.');
     }
 
     return [
@@ -159,7 +187,7 @@ function invoiceMailTransportConfig(array $settings): array
  * local ignoré par Git.
  *
  * @param array{to: string, subject: string, body: string, headers: string} $message
- * @param array{transport: 'native'|'smtp', from_address: string, from_name: string, host?: string, port?: int, encryption?: 'tls'|'ssl', username?: string, password?: string, timeout?: int} $transport
+ * @param array{transport: 'native'|'smtp'|'file', from_address: string, from_name: string, host?: string, port?: int, encryption?: 'tls'|'ssl', username?: string, password?: string, timeout?: int, outbox_path?: string} $transport
  */
 function invoiceMailSendViaSmtp(array $message, array $transport): bool
 {
@@ -216,6 +244,56 @@ function invoiceMailSendViaSmtp(array $message, array $transport): bool
     } finally {
         fclose($socket);
     }
+}
+
+/**
+ * Enregistre un message MIME complet dans une boîte d’envoi locale, hors de
+ * la racine web. Ce transport permet de vérifier les PDF et le contenu des
+ * e-mails sous MAMP sans dépendre d’un MTA installé sur le poste.
+ *
+ * @param array{to: string, subject: string, body: string, headers: string} $message
+ * @param array{transport: 'native'|'smtp'|'file', from_address: string, from_name: string, outbox_path?: string} $transport
+ */
+function invoiceMailSaveToOutbox(array $message, array $transport): bool
+{
+    $outboxPath = (string) ($transport['outbox_path'] ?? '');
+    if ($outboxPath === '' || str_contains($outboxPath, "\0")) {
+        throw new RuntimeException('La boîte d’envoi locale est indisponible.');
+    }
+    if (!is_dir($outboxPath) && !mkdir($outboxPath, 0700, true) && !is_dir($outboxPath)) {
+        throw new RuntimeException('Création de la boîte d’envoi locale impossible.');
+    }
+    if (!is_writable($outboxPath)) {
+        throw new RuntimeException('La boîte d’envoi locale est inaccessible.');
+    }
+
+    $filename = 'facture-' . gmdate('Ymd-His') . '-' . bin2hex(random_bytes(8)) . '.eml';
+    $path = rtrim($outboxPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
+    $payload = 'To: <' . $message['to'] . ">\r\n"
+        . 'Subject: ' . $message['subject'] . "\r\n"
+        . $message['headers'] . "\r\n\r\n"
+        . $message['body'];
+    $handle = @fopen($path, 'x');
+    if (!is_resource($handle)) {
+        throw new RuntimeException('Création du message local impossible.');
+    }
+
+    try {
+        $length = strlen($payload);
+        $written = 0;
+        while ($written < $length) {
+            $result = fwrite($handle, substr($payload, $written));
+            if ($result === false || $result === 0) {
+                throw new RuntimeException('Enregistrement du message local impossible.');
+            }
+            $written += $result;
+        }
+    } finally {
+        fclose($handle);
+    }
+    @chmod($path, 0600);
+
+    return true;
 }
 
 /** @param resource $socket @param list<int> $acceptedCodes */
@@ -283,4 +361,18 @@ function invoiceMailHeaderText(string $value): string
 function invoiceMailEncodedHeader(string $value): string
 {
     return '=?UTF-8?B?' . base64_encode(invoiceMailHeaderText($value)) . '?=';
+}
+
+/**
+ * Gmail affiche les mots de passe d’application par groupes de quatre
+ * caractères. Les espaces de présentation ne font pas partie du secret et
+ * provoquent une erreur SMTP 535 s’ils sont envoyés au serveur.
+ */
+function invoiceMailSmtpPassword(string $password, string $host): string
+{
+    $password = trim($password);
+
+    return strcasecmp($host, 'smtp.gmail.com') === 0
+        ? preg_replace('/\s+/', '', $password) ?? ''
+        : $password;
 }

@@ -574,7 +574,7 @@ img { display: block; max-width: 100%; }
 .hero-control:hover { background: #f8c53c; color: #143f36; opacity: 1; transform: scale(1.08); }
 
 .home-story { display: grid; grid-template-columns: minmax(300px, .95fr) minmax(350px, .85fr); align-items: center; gap: clamp(45px, 9vw, 130px); margin: clamp(82px, 10vw, 145px) 7% 0; }
-.home-story__photo { position: relative; min-height: 530px; overflow: hidden; background: url('../images/hero-seafood.jpg') center / cover no-repeat; border-radius: 50% 50% 4px 4px / 28% 28% 4px 4px; box-shadow: 0 26px 44px rgba(32, 66, 55, .16); }
+.home-story__photo { position: relative; min-height: 530px; overflow: hidden; background: url('../images/Home.jpg') center / cover no-repeat; border-radius: 50% 50% 4px 4px / 28% 28% 4px 4px; box-shadow: 0 26px 44px rgba(32, 66, 55, .16); }
 .home-story__photo::after { position: absolute; inset: 0; content: ""; background: linear-gradient(145deg, rgba(6, 63, 53, .12), transparent 55%); }
 .home-story__seal { position: absolute; right: -24px; bottom: 38px; z-index: 1; display: grid; place-content: center; width: 145px; height: 145px; color: #fff; text-align: center; background: var(--green-950); border: 8px solid #f7f8f4; border-radius: 50%; transform: rotate(-10deg); }
 .home-story__seal b { font-family: "Playfair Display", Georgia, serif; font-size: 1.25rem; line-height: .9; letter-spacing: -.05em; }
@@ -597,7 +597,7 @@ img { display: block; max-width: 100%; }
 .category-card:hover { box-shadow: 0 20px 35px rgba(16, 61, 49, .2); transform: translateY(-7px); }
 .category-card--fish { background-image: url('../images/hero-market.jpg'); }
 .category-card--meat { background-image: url('../images/category-meat.jpg'); }
-.category-card--eggs { background-image: url('../uploads/produits/d11c7bd34ceae474f8e3134847b8aff9.jpg'); }
+.category-card--eggs { background-image: url('../uploads/oeufsfrais.webp'); }
 .category-card__shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(1, 34, 28, .86) 0%, rgba(1, 34, 28, .3) 48%, transparent 76%); transition: background .3s; }
 .category-card:hover .category-card__shade { background: linear-gradient(0deg, rgba(1, 34, 28, .92) 0%, rgba(1, 34, 28, .47) 62%, rgba(1, 34, 28, .1) 100%); }
 .category-card__content { display: grid; gap: 8px; width: 100%; padding: 31px; }

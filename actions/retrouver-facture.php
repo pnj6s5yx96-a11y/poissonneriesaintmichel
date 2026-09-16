@@ -37,6 +37,21 @@ try {
     $statement->execute(['email' => $email]);
     $records = $statement->fetchAll();
 
+    $settings = [
+        'nom_boutique' => 'Poissonnerie Saint-Michel',
+        'adresse_boutique' => 'Akpakpa, Cotonou',
+        'email_boutique' => null,
+    ];
+    $storedSettings = $pdo->query(
+        'SELECT nom_boutique, adresse_boutique, telephone_boutique, email_boutique
+           FROM parametres_boutique
+          WHERE id_parametre = 1'
+    )->fetch();
+    if ($storedSettings) {
+        $settings = array_replace($settings, $storedSettings);
+    }
+    $transport = invoiceMailTransportConfig($settings);
+
     if ($records !== []) {
         $lineStatement = $pdo->prepare(
             'SELECT p.libelle, lc.quantite, p.unite_vente, lc.prix_unitaire_applique, lc.sous_total
@@ -51,30 +66,26 @@ try {
             $invoices[] = ['invoice' => $record, 'lines' => $lineStatement->fetchAll()];
         }
 
-        $settings = [
-            'nom_boutique' => 'Poissonnerie Saint-Michel',
-            'adresse_boutique' => 'Akpakpa, Cotonou',
-            'email_boutique' => null,
-        ];
-        $storedSettings = $pdo->query(
-            'SELECT nom_boutique, adresse_boutique, telephone_boutique, email_boutique
-               FROM parametres_boutique
-              WHERE id_parametre = 1'
-        )->fetch();
-        if ($storedSettings) {
-            $settings = array_replace($settings, $storedSettings);
-        }
-
         if (!sendInvoiceRecoveryEmail($email, $invoices, $settings)) {
             throw new RuntimeException('Le service d’envoi est momentanément indisponible. Réessayez plus tard.');
         }
     }
 
-    flash('success', 'Si des factures confirmées sont associées à cette adresse, elles viennent d’être envoyées par e-mail.');
+    flash(
+        'success',
+        $transport['transport'] === 'file'
+            ? 'Si des factures confirmées sont associées à cette adresse, elles ont été préparées dans la boîte d’envoi locale. Configurez SMTP pour les envoyer vers une boîte e-mail réelle.'
+            : 'Si des factures confirmées sont associées à cette adresse, elles viennent d’être envoyées par e-mail.'
+    );
 } catch (SecurityRateLimitException $exception) {
     flash('error', $exception->getMessage());
 } catch (Throwable $exception) {
-    flash('error', $exception->getMessage());
+    error_log('Échec du renvoi de facture : ' . $exception->getMessage());
+    $message = $exception->getMessage();
+    if (str_contains($message, '(535)') || str_contains($message, 'mot de passe d’application Gmail')) {
+        $message = 'Le compte Gmail d’envoi refuse le mot de passe d’application. L’administrateur doit enregistrer un nouveau mot de passe d’application Google de 16 caractères.';
+    }
+    flash('error', $message);
 }
 
 redirect('retrouver-facture.php');

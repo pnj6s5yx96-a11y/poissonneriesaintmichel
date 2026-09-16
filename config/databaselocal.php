@@ -5,8 +5,8 @@ declare(strict_types=1);
 // database.local.php puis adaptez-le si votre installation diffère.
 return [
     'host' => '127.0.0.1',
-    'port' => '3306',
+    'port' => '8888',
     'database' => 'poissonnerie_saint_michel',
     'username' => 'root',
-    'password' => '',
+    'password' => 'root',
 ];

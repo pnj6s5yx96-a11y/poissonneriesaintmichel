@@ -2,7 +2,10 @@
 declare(strict_types=1);
 
 // Copiez ce fichier vers config/mail.local.php puis renseignez le mot de passe
-// d’application Gmail. Ne renseignez jamais le mot de passe principal Gmail.
+// d’application Gmail de 16 caractères. Ne renseignez jamais le mot de passe
+// principal Gmail et n’ajoutez ni espace ni caractère supplémentaire.
+// Pour tester sous MAMP sans expédition externe, utilisez plutôt le bloc
+// "file" ci-dessous : les messages .eml seront écrits hors de la racine web.
 return [
     'transport' => 'smtp',
     'host' => 'smtp.gmail.com',
@@ -14,3 +17,12 @@ return [
     'from_name' => 'Poissonnerie Saint-Michel',
     'timeout' => 15,
 ];
+
+/*
+return [
+    'transport' => 'file',
+    'from_address' => 'no-reply@poissonnerie-saint-michel.local',
+    'from_name' => 'Poissonnerie Saint-Michel',
+    'outbox_path' => dirname(dirname(dirname(__DIR__))) . '/tmp/poissonnerie-saint-michel-mail-outbox',
+];
+*/

@@ -57,6 +57,9 @@ try {
 
         $updatedCart = [];
         foreach ($submittedQuantities as $productId => $quantity) {
+            // PHP converts numeric array keys received from the form to ints.
+            // preg_match() only accepts a string since PHP 8.
+            $productId = (string) $productId;
             if (preg_match('/^[0-9]+$/', $productId) !== 1) {
                 throw new RuntimeException('Un produit du panier est invalide.');
             }
