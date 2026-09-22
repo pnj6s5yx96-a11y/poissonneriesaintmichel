@@ -17,6 +17,8 @@ try {
 
 $missingProducts = max(0, clientCartItemCount() - count($products));
 $pageTitle = 'Mon panier — Poissonnerie Saint-Michel';
+$metaDescription = 'Préparez votre commande de poissons, viandes et produits congelés chez Poissonnerie Saint-Michel à Cotonou.';
+$seoIndexable = false;
 $activePage = 'panier';
 require __DIR__ . '/includes/header.php';
 ?>

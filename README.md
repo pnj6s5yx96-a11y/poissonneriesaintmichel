@@ -106,6 +106,26 @@ Cette organisation n’utilise ni contrôleur, ni modèle, ni routeur MVC. Elle 
 3. Copier `config/database.local.php.example` vers `config/database.local.php`, puis saisir les identifiants MySQL locaux.
 4. Ouvrir `http://localhost:8888/poissonnerie-saint-michel/` (adapter le port si nécessaire).
 
+> Le déploiement public est prévu à la racine de `httpdocs`. Pour un test MAMP
+> dans le sous-dossier `poissonnerie-saint-michel`, définir la variable Apache
+> `APP_URL=/poissonnerie-saint-michel` dans votre hôte local. Ne définissez pas
+> cette variable sur le serveur si le domaine pointe directement vers `httpdocs`.
+
+## Référencement (SEO)
+
+- Les deux pages destinées aux moteurs sont l’accueil (`/`) et le catalogue
+  (`/catalogue.php`). Elles disposent d’un titre propre, d’une meta description,
+  d’une URL canonique, des balises de partage social et du balisage `Store`.
+- Les paniers, paiements, factures, connexions et espaces d’équipe sont en
+  `noindex` : ils ne doivent pas apparaître dans une recherche ni exposer de
+  données client.
+- Avant la mise en production, remplacez la valeur de repli de
+  `PUBLIC_SITE_URL` dans `config/constants.php` par le domaine canonique exact
+  si `https://poissonnerie-saint-michel.yes.bj` n’est pas votre adresse publique.
+  Utilisez toujours une seule version du domaine, en HTTPS et sans slash final.
+- Après déploiement, déclarez ce domaine dans Google Search Console puis envoyez
+  `https://votre-domaine/sitemap.xml`. Le fichier `robots.txt` est déjà fourni.
+
 Ne versionnez jamais `config/database.local.php`, ni le contenu réel de `assets/uploads/`.
 
 ## Modules déjà fonctionnels

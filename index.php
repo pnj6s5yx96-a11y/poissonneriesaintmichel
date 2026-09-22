@@ -3,7 +3,30 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/bootstrap.php';
 
-$pageTitle = 'Poissonnerie Saint-Michel — Le goût de la mer, simplement';
+$pageTitle = 'Poissonnerie à Cotonou : poissons et produits congelés | Saint-Michel';
+$metaDescription = 'Poissonnerie Saint-Michel à Akpakpa, Cotonou : poissons, viandes et produits congelés sélectionnés. Commandez en ligne, retrait en boutique ou livraison à domicile.';
+$seoIndexable = true;
+$seoCanonicalPath = '';
+$seoStructuredData = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Store',
+    'name' => 'Poissonnerie Saint-Michel',
+    'url' => publicUrl(),
+    'image' => publicUrl('assets/images/hero-market.jpg'),
+    'description' => $metaDescription,
+    'address' => [
+        '@type' => 'PostalAddress',
+        'streetAddress' => 'Akpakpa',
+        'addressLocality' => 'Cotonou',
+        'addressRegion' => 'Littoral',
+        'addressCountry' => 'BJ',
+    ],
+    'areaServed' => [
+        '@type' => 'City',
+        'name' => 'Cotonou',
+    ],
+    'currenciesAccepted' => 'XOF',
+];
 $activePage = 'accueil';
 require __DIR__ . '/includes/header.php';
 ?>
@@ -16,8 +39,8 @@ require __DIR__ . '/includes/header.php';
   <div class="home-hero__overlay" aria-hidden="true"></div>
   <div class="home-hero__content">
     <p class="home-kicker">Poissonnerie Saint-Michel · Cotonou</p>
-    <h1 id="home-hero-title">La mer arrive<br>dans votre cuisine.</h1>
-    <p class="home-hero__lead">Des produits choisis avec soin, conservés dans le respect de la chaîne du froid et disponibles pour le retrait ou la livraison.</p>
+    <h1 id="home-hero-title">Poissons et produits congelés<br>à Cotonou.</h1>
+    <p class="home-hero__lead">À Akpakpa, découvrez des poissons, viandes et produits congelés choisis avec soin, conservés dans le respect de la chaîne du froid et disponibles en retrait ou en livraison.</p>
     <div class="home-hero__actions">
       <a class="button button-sun" href="<?= e(url('catalogue.php')) ?>">Voir le catalogue <span aria-hidden="true">→</span></a>
       <a class="hero-link" href="#notre-promesse">Notre engagement <span aria-hidden="true">↓</span></a>

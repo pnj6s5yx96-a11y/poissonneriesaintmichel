@@ -65,6 +65,8 @@ if (queryString('telecharger', 5) === '1') {
 }
 
 $pageTitle = 'Commande ' . $invoice['numero_commande'] . ' — Facture ' . $invoice['numero_document'];
+$metaDescription = 'Facture privée associée à une commande Poissonnerie Saint-Michel.';
+$seoIndexable = false;
 $activePage = 'paiement';
 require __DIR__ . '/includes/header.php';
 ?>

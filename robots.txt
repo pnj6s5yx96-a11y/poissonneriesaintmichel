@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Espaces privés, traitements et documents client : à ne pas explorer.
+Disallow: /admin/
+Disallow: /gerant/
+Disallow: /livreur/
+Disallow: /auth/
+Disallow: /actions/
+Disallow: /api/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /sql/
+Disallow: /assets/uploads/
+Disallow: /panier.php
+Disallow: /validation-commande.php
+Disallow: /paiement-commande.php
+Disallow: /suivi-commande.php
+Disallow: /facture.php
+Disallow: /retrouver-facture.php
+Disallow: /setup-admin.php
+
+Sitemap: https://poissonnerie-saint-michel.yes.bj/sitemap.xml

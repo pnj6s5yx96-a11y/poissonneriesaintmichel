@@ -67,6 +67,8 @@ if (isPost() && !isset($setupError)) {
 }
 
 $pageTitle = 'Premier administrateur — Poissonnerie Saint-Michel';
+$metaDescription = 'Configuration interne sécurisée de Poissonnerie Saint-Michel.';
+$seoIndexable = false;
 require __DIR__ . '/includes/header.php';
 ?>
 <section class="auth-layout">

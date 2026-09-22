@@ -37,6 +37,8 @@ try {
 $isCash = $order['mode_paiement'] === 'ESPECES';
 $isSuccessful = $order['statut_paiement'] === 'REUSSI';
 $pageTitle = 'Paiement de la commande — Poissonnerie Saint-Michel';
+$metaDescription = 'Confirmation sécurisée du paiement de votre commande Poissonnerie Saint-Michel.';
+$seoIndexable = false;
 $activePage = 'paiement';
 require __DIR__ . '/includes/header.php';
 ?>

@@ -4,6 +4,8 @@ declare(strict_types=1);
 function renderPageStub(string $title, string $heading, string $description): void
 {
     $pageTitle = $title;
+    $metaDescription = $description;
+    $seoIndexable = false;
     require __DIR__ . '/header.php';
     ?>
     <section class="hero">

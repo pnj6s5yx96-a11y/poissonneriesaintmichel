@@ -4,10 +4,13 @@ declare(strict_types=1);
 require_once __DIR__ . '/includes/bootstrap.php';
 require_once __DIR__ . '/config/database.php';
 
-$pageTitle = 'Catalogue — Poissonnerie Saint-Michel';
-$activePage = 'catalogue';
 $categoryId = queryPositiveInt('categorie');
 $search = queryString('q', 100);
+$pageTitle = 'Poissons, viandes et produits congelés à Cotonou | Saint-Michel';
+$metaDescription = 'Découvrez le catalogue Saint-Michel à Cotonou : poissons, viandes, œufs et produits congelés, avec prix et disponibilités. Commande en ligne, retrait ou livraison.';
+$seoIndexable = $categoryId === null && $search === '';
+$seoCanonicalPath = 'catalogue.php';
+$activePage = 'catalogue';
 $categories = [];
 $produits = [];
 $databaseError = null;
@@ -51,8 +54,8 @@ require __DIR__ . '/includes/header.php';
 <section class="page-heading">
   <p class="breadcrumbs"><a href="<?= e(url()) ?>">Accueil</a> / Catalogue</p>
   <p class="eyebrow">Produits congelés</p>
-  <h1>Choisissez ce qui vous fait plaisir.</h1>
-  <p>Une sélection organisée par catégorie, avec le prix et l’unité de vente clairement indiqués.</p>
+  <h1>Poissons, viandes et produits congelés à Cotonou.</h1>
+  <p>Une sélection organisée par catégorie, avec le prix, l’unité de vente et les disponibilités clairement indiqués.</p>
 </section>
 
 <?php if ($databaseError !== null): ?>
@@ -88,7 +91,7 @@ require __DIR__ . '/includes/header.php';
             <article class="product-card">
               <div class="product-image">
                 <?php if (!empty($produit['photo_url'])): ?>
-                  <img src="<?= e(url($produit['photo_url'])) ?>" alt="<?= e($produit['libelle']) ?>">
+                  <img src="<?= e(url($produit['photo_url'])) ?>" alt="<?= e($produit['libelle'] . ' — ' . $produit['categorie']) ?>">
                 <?php else: ?>
                   <span aria-hidden="true">~&lt;°)))&gt;</span>
                 <?php endif; ?>

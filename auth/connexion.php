@@ -8,6 +8,8 @@ if (isAuthenticated()) {
 }
 
 $pageTitle = 'Connexion équipe — Poissonnerie Saint-Michel';
+$metaDescription = 'Accès sécurisé réservé à l’équipe de la Poissonnerie Saint-Michel.';
+$seoIndexable = false;
 $activePage = 'connexion';
 require __DIR__ . '/../includes/header.php';
 ?>

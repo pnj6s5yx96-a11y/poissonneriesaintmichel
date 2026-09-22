@@ -4,6 +4,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/includes/bootstrap.php';
 
 $pageTitle = 'Retrouver ma facture — Poissonnerie Saint-Michel';
+$metaDescription = 'Demandez le renvoi sécurisé de votre facture Poissonnerie Saint-Michel par e-mail.';
+$seoIndexable = false;
 $activePage = 'facture';
 require __DIR__ . '/includes/header.php';
 ?>

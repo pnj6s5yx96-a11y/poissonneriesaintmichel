@@ -85,6 +85,8 @@ $canViewInvoice = $order
     && !empty($order['numero_facture'])
     && clientCanAccessOrder((int) $order['id_client'], (string) $order['numero_commande']);
 $pageTitle = 'Suivre ma commande — Poissonnerie Saint-Michel';
+$metaDescription = 'Suivez l’avancement de votre commande Saint-Michel à l’aide de votre numéro de commande.';
+$seoIndexable = false;
 $activePage = 'suivi';
 require __DIR__ . '/includes/header.php';
 ?>

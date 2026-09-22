@@ -87,6 +87,8 @@ foreach ($deliveryQuarters as $quarter) {
 }
 $deliveryFee = $selectedRetrieval === 'LIVRAISON' && $selectedZone !== null ? (float) $selectedZone['frais_livraison'] : 0.0;
 $pageTitle = 'Finaliser ma commande — Poissonnerie Saint-Michel';
+$metaDescription = 'Validation sécurisée d’une commande Saint-Michel : coordonnées, retrait en boutique ou livraison à Cotonou et paiement.';
+$seoIndexable = false;
 $activePage = 'validation';
 require __DIR__ . '/includes/header.php';
 ?>

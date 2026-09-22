@@ -47,6 +47,12 @@ function url(string $path = ''): string
     return BASE_URL . '/' . ltrim($path, '/');
 }
 
+/** Retourne une URL absolue stable pour les moteurs de recherche et le partage. */
+function publicUrl(string $path = ''): string
+{
+    return PUBLIC_SITE_URL . '/' . ltrim($path, '/');
+}
+
 function redirect(string $path): never
 {
     header('Location: ' . url($path));

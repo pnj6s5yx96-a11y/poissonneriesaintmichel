@@ -2,6 +2,17 @@
 /** @var string $pageTitle */
 $pageTitle = $pageTitle ?? 'Poissonnerie Saint-Michel';
 $activePage = $activePage ?? '';
+$metaDescription = trim((string) ($metaDescription ?? 'Poissonnerie Saint-Michel à Akpakpa, Cotonou : poissons, viandes et produits congelés, à commander en ligne.'));
+$metaDescription = mb_strimwidth($metaDescription, 0, 190, '…');
+$seoIndexable = (bool) ($seoIndexable ?? false);
+$seoCanonicalPath = (string) ($seoCanonicalPath ?? '');
+$seoCanonicalUrl = $seoIndexable ? publicUrl($seoCanonicalPath) : null;
+$seoImagePath = ltrim((string) ($seoImagePath ?? 'assets/images/hero-market.jpg'), '/');
+$seoImageUrl = publicUrl($seoImagePath);
+$seoStructuredData = $seoStructuredData ?? null;
+$robotsDirective = $seoIndexable
+    ? 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'
+    : 'noindex,nofollow,noarchive';
 $user = currentUser();
 $stylesheetVersion = (string) (@filemtime(PROJECT_ROOT . '/assets/css/app.css') ?: time());
 $scriptVersion = (string) (@filemtime(PROJECT_ROOT . '/assets/js/app.js') ?: time());
@@ -15,6 +26,9 @@ $cartItemCount = clientCartItemCount();
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('Referrer-Policy: strict-origin-when-cross-origin');
+if (!$seoIndexable) {
+    header('X-Robots-Tag: noindex, nofollow, noarchive');
+}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -22,8 +36,27 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0c6b55">
+  <meta name="description" content="<?= e($metaDescription) ?>">
+  <meta name="robots" content="<?= e($robotsDirective) ?>">
+  <?php if ($seoCanonicalUrl !== null): ?><link rel="canonical" href="<?= e($seoCanonicalUrl) ?>"><?php endif; ?>
+  <meta property="og:locale" content="fr_BJ">
+  <meta property="og:site_name" content="Poissonnerie Saint-Michel">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="<?= e($pageTitle) ?>">
+  <meta property="og:description" content="<?= e($metaDescription) ?>">
+  <?php if ($seoCanonicalUrl !== null): ?><meta property="og:url" content="<?= e($seoCanonicalUrl) ?>"><?php endif; ?>
+  <meta property="og:image" content="<?= e($seoImageUrl) ?>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<?= e($pageTitle) ?>">
+  <meta name="twitter:description" content="<?= e($metaDescription) ?>">
+  <meta name="twitter:image" content="<?= e($seoImageUrl) ?>">
   <title><?= e($pageTitle) ?></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="<?= e(url('assets/css/app.css') . '?v=' . $stylesheetVersion) ?>">
+  <?php if (is_array($seoStructuredData)): ?>
+    <script type="application/ld+json" nonce="<?= e(cspNonce()) ?>"><?= json_encode($seoStructuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
+  <?php endif; ?>
 </head>
 <body class="page-<?= e($activePage) ?>">
 <header class="site-header">
