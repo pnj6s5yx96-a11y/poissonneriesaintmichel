@@ -15,7 +15,7 @@ require __DIR__ . '/../includes/header.php';
 ?>
 <section class="auth-layout">
   <div class="auth-intro">
-    <p class="auth-intro__brand"><span aria-hidden="true">S</span> Poissonnerie Saint-Michel</p>
+    <p class="auth-intro__brand"><img src="<?= e(url('assets/images/logo-saint-michel-mark.jpg')) ?>" width="29" height="29" alt=""> Poissonnerie Saint-Michel</p>
     <p class="eyebrow">Espace sécurisé</p>
     <h1>Votre journée commence ici.</h1>
     <p>Accédez aux outils adaptés à votre rôle : gestion du catalogue, suivi des commandes, stock ou livraisons.</p>

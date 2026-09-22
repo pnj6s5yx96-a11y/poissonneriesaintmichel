@@ -5,7 +5,7 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <span class="footer-mark" aria-hidden="true">S</span>
+      <img class="footer-mark" src="<?= e(url('assets/images/logo-saint-michel-mark.jpg')) ?>" width="43" height="43" alt="">
       <div><strong>Saint-Michel</strong><span>Poissonnerie · Akpakpa, Cotonou</span></div>
     </div>
     <div class="footer-links" aria-label="Liens utiles">

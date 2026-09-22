@@ -36,6 +36,10 @@ if (!$seoIndexable) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0c6b55">
+  <link rel="icon" type="image/png" sizes="512x512" href="<?= e(url('assets/images/icon-saint-michel-512.png')) ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= e(url('assets/images/favicon-32.png')) ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= e(url('assets/images/favicon-16.png')) ?>">
+  <link rel="apple-touch-icon" sizes="180x180" href="<?= e(url('assets/images/apple-touch-icon.png')) ?>">
   <meta name="description" content="<?= e($metaDescription) ?>">
   <meta name="robots" content="<?= e($robotsDirective) ?>">
   <?php if ($seoCanonicalUrl !== null): ?><link rel="canonical" href="<?= e($seoCanonicalUrl) ?>"><?php endif; ?>
@@ -62,8 +66,7 @@ if (!$seoIndexable) {
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="<?= e(url()) ?>" aria-label="Accueil Poissonnerie Saint-Michel">
-      <span class="brand-mark" aria-hidden="true">S</span>
-      <span>Saint-Michel<small>Poissonnerie</small></span>
+      <img class="brand-logo" src="<?= e(url('assets/images/logo-saint-michel.jpg')) ?>" width="151" height="52" alt="Poissonnerie Saint-Michel">
     </a>
     <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="primary-nav">
       <span></span><span></span><span></span>
@@ -86,7 +89,7 @@ if (!$seoIndexable) {
 <div class="dashboard-shell">
   <aside class="dashboard-sidebar" aria-label="Navigation <?= e(dashboardSectionLabel($dashboardSection)) ?>">
     <a class="dashboard-sidebar__brand" href="<?= e(url($dashboardSection . '/index.php')) ?>">
-      <span class="dashboard-sidebar__mark" aria-hidden="true">S</span>
+      <img class="dashboard-sidebar__mark" src="<?= e(url('assets/images/logo-saint-michel-mark.jpg')) ?>" width="37" height="37" alt="">
       <span><strong>Saint-Michel</strong><small><?= e(dashboardSectionLabel($dashboardSection)) ?></small></span>
     </a>
     <div class="dashboard-sidebar__profile">
