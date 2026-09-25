@@ -88,17 +88,18 @@ require __DIR__ . '/includes/header.php';
       <?php else: ?>
         <div class="product-grid">
           <?php foreach ($produits as $produit): ?>
+            <?php $productUrl = url('produit.php?produit=' . (int) $produit['id_produit']); ?>
             <article class="product-card">
               <div class="product-image">
                 <?php if (!empty($produit['photo_url'])): ?>
-                  <img src="<?= e(url($produit['photo_url'])) ?>" alt="<?= e($produit['libelle'] . ' — ' . $produit['categorie']) ?>">
+                  <a class="product-card__image-link" href="<?= e($productUrl) ?>"><img src="<?= e(url($produit['photo_url'])) ?>" alt="<?= e($produit['libelle'] . ' — ' . $produit['categorie']) ?>"></a>
                 <?php else: ?>
                   <span aria-hidden="true">~&lt;°)))&gt;</span>
                 <?php endif; ?>
               </div>
               <div class="product-body">
                 <span class="product-category"><?= e($produit['categorie']) ?></span>
-                <h3><?= e($produit['libelle']) ?></h3>
+                <h3><a class="product-card__title-link" href="<?= e($productUrl) ?>"><?= e($produit['libelle']) ?></a></h3>
                 <p><?= e($produit['description'] ?: 'Produit congelé sélectionné par la Poissonnerie Saint-Michel.') ?></p>
                 <div class="price"><?= number_format((float) $produit['prix_unitaire'], 0, ',', ' ') ?> FCFA <small>/ <?= e(strtolower($produit['unite_vente'])) ?></small></div>
                 <?php if ((float) $produit['quantite_stock'] > 0): ?>

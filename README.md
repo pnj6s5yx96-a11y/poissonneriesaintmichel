@@ -126,6 +126,23 @@ Cette organisation n’utilise ni contrôleur, ni modèle, ni routeur MVC. Elle 
 - Après déploiement, déclarez ce domaine dans Google Search Console puis envoyez
   `https://votre-domaine/sitemap.xml`. Le fichier `robots.txt` est déjà fourni.
 
+## Google Merchant Center
+
+Le flux produits se génère automatiquement depuis le catalogue à l’adresse :
+
+`https://poissonnerie-saint-michel.yes.bj/google-merchant-feed.xml`
+
+Dans Merchant Center, créez une **source de données via récupération planifiée**
+et utilisez cette URL. Le flux comprend les produits et catégories actifs qui
+ont une photo téléversée. Le prix, le stock et la disponibilité sont lus en
+temps réel depuis la base ; ne créez donc pas de fichier Excel séparé.
+
+Chaque produit doit avoir sa propre photo nette et réelle. Les articles sans
+photo sont volontairement exclus, car Google exige une image propre au produit.
+Les produits bruts ou sans identifiant fabricant sont déclarés sans GTIN. Pour
+un produit emballé disposant d'un code-barres fabricant, ne l'inventez pas :
+ajoutez son GTIN réel avant de le publier dans Merchant Center.
+
 Ne versionnez jamais `config/database.local.php`, ni le contenu réel de `assets/uploads/`.
 
 ## Modules déjà fonctionnels

@@ -6,6 +6,7 @@ Options -Indexes
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteRule ^google-merchant-feed\.xml$ google-merchant-feed.php [L]
   RewriteRule ^(?:config|includes|sql|\.git|\.svn)(?:/|$) - [F,L,NC]
   RewriteRule ^(?:database_.*\.sql|.*\.(?:env|ini|log|sql|bak|old|swp|dist|phar))$ - [F,L,NC]
   RewriteRule ^assets/uploads/.*\.(?:php[0-9s]?|phtml|phar|cgi|pl|asp|aspx|jsp)$ - [F,L,NC]
